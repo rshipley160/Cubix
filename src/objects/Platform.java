@@ -7,8 +7,8 @@ import org.lwjgl.opengl.GL11;
 
 public class Platform extends GameObject {
     private static Texture texture = new Texture("res\\platforms.png");
-    private static int width = Game.ui.getWidth()/4;
-    private static int height = width/4;
+    private static int width = 128;
+    private static int height = 32;
 
     public enum PlatformType {
         RED(0),

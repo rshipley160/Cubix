@@ -17,7 +17,7 @@ import org.w3c.dom.Text;
 
 public class Level1 implements Scene {
     private GameObject background = new GameObject();
-
+    private Texture bg = new Texture("res\\background.png");
     private List<GameObject> platforms = new java.util.LinkedList<>();
     private List<GameObject> colliders = new java.util.LinkedList<>();
     private List<Player> players = new java.util.LinkedList<>();
@@ -25,21 +25,24 @@ public class Level1 implements Scene {
 
     public Level1() {
         background.getHitbox().setBounds(0, 0, ui.getWidth(), ui.getHeight());
-        background.setColor(.9f, 0.9f, 0.9f);
-        colliders.add(new GameObject());
-        colliders.get(0).getHitbox().setBounds(-100, 0,100, ui.getHeight());
-        colliders.add(new GameObject());
-        colliders.get(1).getHitbox().setBounds(ui.getWidth(), 0,100, ui.getHeight());
-        colliders.add(new GameObject());
-        colliders.get(2).getHitbox().setBounds(0, -100,ui.getWidth(), 100);
-        colliders.add(new GameObject());
-        colliders.get(3).getHitbox().setBounds(0, ui.getHeight(),ui.getWidth(), 100);
+//        colliders.add(new GameObject());
+//        colliders.get(0).getHitbox().setBounds(-100, 0,100, ui.getHeight());
+//        colliders.add(new GameObject());
+//        colliders.get(1).getHitbox().setBounds(ui.getWidth(), 0,100, ui.getHeight());
+//        colliders.add(new GameObject());
+//        colliders.get(2).getHitbox().setBounds(0, -100,ui.getWidth(), 100);
+//        colliders.add(new GameObject());
+//        colliders.get(3).getHitbox().setBounds(0, ui.getHeight(),ui.getWidth(), 100);
 
 
-        platforms.add(new Platform(ui.getWidth()/2-ui.getWidth()/4, ui.getHeight()-ui.getWidth()/16, Platform.PlatformType.BLUE));
-        platforms.add(new Platform(ui.getWidth()/2, ui.getHeight()-ui.getWidth()/16, Platform.PlatformType.GRAY));
-        platforms.add(new Wall(ui.getWidth()/4, 200, Platform.PlatformType.WHITE));
-        platforms.add(new Wall(ui.getWidth()*3/4, 200, Platform.PlatformType.RED));
+        platforms.add(new Platform(ui.getWidth()/2-256, ui.getHeight()-128, Platform.PlatformType.BLUE));
+        platforms.add(new Platform(ui.getWidth()/2-128, ui.getHeight()-128, Platform.PlatformType.GRAY));
+        platforms.add(new Platform(ui.getWidth()/2, ui.getHeight()-128, Platform.PlatformType.RED));
+        platforms.add(new Platform(ui.getWidth()/2+128, ui.getHeight()-128, Platform.PlatformType.WHITE));
+        platforms.add(new Wall(ui.getWidth()/2-288, 512, Platform.PlatformType.WHITE));
+        platforms.add(new Wall(ui.getWidth()/2+256, 512, Platform.PlatformType.RED));
+        platforms.add(new Wall(ui.getWidth()/2-288, 384, Platform.PlatformType.BLUE));
+        platforms.add(new Wall(ui.getWidth()/2+256, 384, Platform.PlatformType.GRAY));
         players.add(new Player(ui.getWidth()/2-75, ui.getHeight()/2-100, Player.COLORS.BLUE));
         players.add(new Player(ui.getWidth()/2+25, ui.getHeight()/2-100, Player.COLORS.RED));
         colliders.addAll(platforms);
@@ -53,8 +56,8 @@ public class Level1 implements Scene {
     @Override
     public Scene drawFrame(int delta) {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // clear the framebuffer
-
-        background.draw();
+        GL11.glColor3f(1, 1, 1);
+        bg.draw(background);
 
         for (Trap t : traps)
         {

@@ -7,8 +7,8 @@ import org.lwjgl.opengl.GL11;
 
 public class Wall extends GameObject {
     private static Texture texture = new Texture("res\\walls.png");
-    private static int height = Game.ui.getHeight()/4;
-    private static int width = height/4;
+    private static int height = 128;
+    private static int width = 32;
 
 
     private float num;
