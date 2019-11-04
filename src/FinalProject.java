@@ -17,6 +17,6 @@ public class FinalProject extends Game {
         initUI(640, 480, "Final Project");
 
         // screen clear is white (this could go in drawFrame if you wanted it to change
-        GL11.glClearColor(0.95f, 0.95f, 0.95f, 0.0f);
+        GL11.glClearColor(0f, 0f, 0f, 0f);
     }
 }

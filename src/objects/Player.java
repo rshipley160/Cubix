@@ -8,21 +8,19 @@ import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.awt.*;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class Player extends GameObject {
     private XYPair<Float> velocity;
     private XYPair<Float> accel = new XYPair<>(0f,5f);
-    private float mass;
-    public enum COLORS {RED, BLUE};
-    final int size = 50;
-    private COLORS color = COLORS.BLUE;
+    public enum COLORS {RED, BLUE}
+    private COLORS color;
     private static Texture blueTexture = new Texture("res\\BluePlayer.png");
     private static Texture redTexture = new Texture("res\\RedPlayer.png");
-    private Texture currentTexture = blueTexture;
     private boolean kinematic = false;
     private boolean active = true;
-    private float speed = 0.5f;
     private boolean grounded = false;
     private List<GameObject> colliders = new java.util.LinkedList();
     {
@@ -33,20 +31,11 @@ public class Player extends GameObject {
     }
 
 
-    public Player(int x, int y){
-        this.hitbox.setBounds(x,y,size,size);
-
-    }
-
     public Player(int x, int y, COLORS color){
+        int size = 50;
         this.hitbox.setBounds(x,y,size,size);
         this.color = color;
-        this.active = false;
-    }
-
-    public void setColor(COLORS color)
-    {
-        this.color = color;
+        this.active = true;
     }
 
     public void setActive(boolean active) {
@@ -58,15 +47,17 @@ public class Player extends GameObject {
         this.colliders = colliders;
     }
 
-    int timer = 0;
     @Override
     public void update(int delta) {
-        double x = hitbox.getX();
-        double y = hitbox.getY();
 
         Float time = delta / 1000f;
-
-        if (this.kinematic)
+        if (this.hitbox.x < 0)
+            System.out.println("Left screen left");
+        if (this.hitbox.x > Game.ui.getWidth())
+            System.out.println("Left screen right");
+        if (this.hitbox.y > Game.ui.getHeight())
+            System.out.println("Left screen bottom");
+        if (this.kinematic || !this.active)
             return;
 
         if (grounded)
@@ -82,39 +73,39 @@ public class Player extends GameObject {
         velocity.x += accel.x*time;
         velocity.y += accel.y*time;
 
-        // update position based on velocity
-        x += delta*velocity.x;
-        y += delta*velocity.y;
-
-
-        this.hitbox.setLocation((int)x, (int)y);
-
         if (Game.ui.keyPressed(GLFW_KEY_W))
         {
             if (grounded)
                 this.velocity.y = -1.5f;
         }
 
+        // update position based on velocity
+        double x = delta*velocity.x;
+        double y = delta*velocity.y;
+
+        grounded = false;
+
+        for (int i = 0; i < 5; i++) {
+            this.translate((int) (x*0.2), (int) (y*0.2));
+        }
+        float speed = 0.5f;
         if (Game.ui.keyPressed(GLFW_KEY_A))
         {
-            this.hitbox.translate((int)(-speed*delta), 0);
+            this.translate((int)(-speed *delta), 0);
         }
 
         if (Game.ui.keyPressed(GLFW_KEY_D))
         {
-            this.hitbox.translate((int)(speed*delta), 0);
+            this.translate((int)(speed *delta), 0);
         }
 
-        grounded = false;
 
-        checkCollisions();
     }
 
     public void checkCollisions()
     {
         int newX = this.hitbox.x;
         int newY = this.hitbox.y;
-        int margin = 10;
         for (GameObject p : colliders)
         {
             if (p.equals(this))
@@ -152,14 +143,58 @@ public class Player extends GameObject {
         this.hitbox.setLocation(newX, newY);
     }
 
+    public void translate(int x, int y)
+    {
+        Rectangle test = new Rectangle(this.hitbox.x + x, this.hitbox.y+y, this.hitbox.width, this.hitbox.height);
+        int deltaX = x;
+        int deltaY = y;
+        test.translate(deltaX, deltaY);
+        for (GameObject coll : colliders)
+        {
+            if (test.intersects(coll.getHitbox()))
+            {
+                if (coll.equals(this)) { continue;}
+                Rectangle hit = coll.getHitbox();
+                // If player right overlaps object left
+                // We hit on the left side so back out to the left
+                // If player bottom overlaps object top
+                // We hit on the top side of the object so back out to the top
+                if (test.y + test.height > hit.y && test.y < hit.y)
+                {
+                    deltaY = hit.y - this.hitbox.y - this.hitbox.height;
+                    grounded = true;
+                    System.out.println("Object top");
+                }
+                else if (test.y < hit.y + hit.height && test.y + test.height > hit.y + hit.height)
+                {
+                    deltaY = hit.y + hit.height - this.hitbox.y;
+                    this.velocity.y = 0f;
+                    System.out.println("Object bottom");
+                }
+                else if (test.x + test.width > hit.x && test.x < hit.x)
+                {
+                    deltaX = hit.x - this.hitbox.x  - this.hitbox.width;
+                    System.out.println("Object left");
+                }
+                // If player left overlaps object right
+                // We hit on the right side of the object so back out to the right
+                else if (test.x < hit.x + hit.width && test.x + test.width > hit.x + hit.width)
+                {
+                    deltaX = hit.x + hit.width - this.hitbox.x;
+                    System.out.println("Object right");
+                }
+            }
+        }
+        this.hitbox.translate(deltaX, deltaY);
+    }
+
     public void draw()
     {
-        switch (color) {
-            case RED:
-                currentTexture = redTexture;
-                break;
-            default:
-                currentTexture = blueTexture;
+        Texture currentTexture;
+        if (color == COLORS.RED) {
+            currentTexture = redTexture;
+        } else {
+            currentTexture = blueTexture;
         }
 
         float adjust = 0f;
