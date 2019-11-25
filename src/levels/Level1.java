@@ -39,10 +39,10 @@ public class Level1 implements Scene {
         platforms.add(new Platform(ui.getWidth()/2-128, ui.getHeight()-128, Platform.PlatformType.GRAY));
         platforms.add(new Platform(ui.getWidth()/2, ui.getHeight()-128, Platform.PlatformType.RED));
         platforms.add(new Platform(ui.getWidth()/2+128, ui.getHeight()-128, Platform.PlatformType.WHITE));
-        platforms.add(new Wall(ui.getWidth()/2-288, 512, Platform.PlatformType.WHITE));
-        platforms.add(new Wall(ui.getWidth()/2+256, 512, Platform.PlatformType.RED));
-        platforms.add(new Wall(ui.getWidth()/2-288, 384, Platform.PlatformType.BLUE));
-        platforms.add(new Wall(ui.getWidth()/2+256, 384, Platform.PlatformType.GRAY));
+        platforms.add(new Wall(ui.getWidth()/2-288, 544, Platform.PlatformType.WHITE));
+        platforms.add(new Wall(ui.getWidth()/2+256, 544, Platform.PlatformType.RED));
+        platforms.add(new Wall(ui.getWidth()/2-288, 416, Platform.PlatformType.BLUE));
+        platforms.add(new Wall(ui.getWidth()/2+256, 416, Platform.PlatformType.GRAY));
         players.add(new Player(ui.getWidth()/2-75, ui.getHeight()/2-100, Player.COLORS.BLUE));
         players.add(new Player(ui.getWidth()/2+25, ui.getHeight()/2-100, Player.COLORS.RED));
         colliders.addAll(platforms);
