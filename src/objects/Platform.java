@@ -9,6 +9,7 @@ public class Platform extends GameObject {
     private static Texture texture = new Texture("res\\platforms.png");
     private static int width = 128;
     private static int height = 32;
+    private static int cellConversion = 32;
 
     public enum PlatformType {
         RED(0),
@@ -22,8 +23,9 @@ public class Platform extends GameObject {
     }
 
     private float num;
-    public Platform(int x, int y, PlatformType type){
-        this.hitbox.setBounds(x,y,width,height);
+    public Platform(int cellX, int cellY, PlatformType type){
+
+        this.hitbox.setBounds(Game.ui.getWidth()/2 + cellConversion*cellX, Game.ui.getHeight()/2+cellConversion*cellY,width,height);
         this.setColor(1f, 1f, 1f);
         this.num = type.num;
     }

@@ -42,6 +42,15 @@ public class Player extends GameObject {
         this.active = active;
     }
 
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    public boolean isKinematic() {
+        return kinematic;
+    }
+
     public void setColliders(List<GameObject> colliders)
     {
         this.colliders = colliders;
@@ -57,7 +66,7 @@ public class Player extends GameObject {
             System.out.println("Left screen right");
         if (this.hitbox.y > Game.ui.getHeight())
             System.out.println("Left screen bottom");
-        if (this.kinematic || !this.active)
+        if (this.kinematic)
             return;
 
         if (grounded)
@@ -73,7 +82,7 @@ public class Player extends GameObject {
         velocity.x += accel.x*time;
         velocity.y += accel.y*time;
 
-        if (Game.ui.keyPressed(GLFW_KEY_W))
+        if (this.active && Game.ui.keyPressed(GLFW_KEY_W))
         {
             if (grounded)
                 this.velocity.y = -1.5f;
@@ -89,12 +98,12 @@ public class Player extends GameObject {
             this.translate((int) (x*0.2), (int) (y*0.2));
         }
         float speed = 0.5f;
-        if (Game.ui.keyPressed(GLFW_KEY_A))
+        if (this.active && Game.ui.keyPressed(GLFW_KEY_A))
         {
             this.translate((int)(-speed *delta), 0);
         }
 
-        if (Game.ui.keyPressed(GLFW_KEY_D))
+        if (this.active && Game.ui.keyPressed(GLFW_KEY_D))
         {
             this.translate((int)(speed *delta), 0);
         }
@@ -198,7 +207,7 @@ public class Player extends GameObject {
         }
 
         float adjust = 0f;
-        if (this.kinematic) {adjust = 0.5f;}
+        if (this.kinematic | !this.active) {adjust = 0.5f;}
 
         GL11.glColor3f(1,1,1);
         currentTexture.bind();

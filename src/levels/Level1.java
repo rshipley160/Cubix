@@ -2,15 +2,14 @@ package levels;
 
 import static edu.utc.game.Game.ui;
 
-import edu.utc.game.Game;
 import edu.utc.game.GameObject;
 import edu.utc.game.Scene;
 import edu.utc.game.Texture;
-import javafx.print.PageLayout;
 import objects.*;
 
 import java.util.List;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.CallbackI;
 import org.w3c.dom.Text;
@@ -22,27 +21,18 @@ public class Level1 implements Scene {
     private List<GameObject> colliders = new java.util.LinkedList<>();
     private List<Player> players = new java.util.LinkedList<>();
     private List<Trap> traps = new java.util.LinkedList<>();
+    private Player activePlayer;
 
     public Level1() {
         background.getHitbox().setBounds(0, 0, ui.getWidth(), ui.getHeight());
-//        colliders.add(new GameObject());
-//        colliders.get(0).getHitbox().setBounds(-100, 0,100, ui.getHeight());
-//        colliders.add(new GameObject());
-//        colliders.get(1).getHitbox().setBounds(ui.getWidth(), 0,100, ui.getHeight());
-//        colliders.add(new GameObject());
-//        colliders.get(2).getHitbox().setBounds(0, -100,ui.getWidth(), 100);
-//        colliders.add(new GameObject());
-//        colliders.get(3).getHitbox().setBounds(0, ui.getHeight(),ui.getWidth(), 100);
 
-
-        platforms.add(new Platform(ui.getWidth()/2-256, ui.getHeight()-128, Platform.PlatformType.BLUE));
-        platforms.add(new Platform(ui.getWidth()/2-128, ui.getHeight()-128, Platform.PlatformType.GRAY));
-        platforms.add(new Platform(ui.getWidth()/2, ui.getHeight()-128, Platform.PlatformType.RED));
-        platforms.add(new Platform(ui.getWidth()/2+128, ui.getHeight()-128, Platform.PlatformType.WHITE));
-        platforms.add(new Wall(ui.getWidth()/2-288, 544, Platform.PlatformType.WHITE));
-        platforms.add(new Wall(ui.getWidth()/2+256, 544, Platform.PlatformType.RED));
-        platforms.add(new Wall(ui.getWidth()/2-288, 416, Platform.PlatformType.BLUE));
-        platforms.add(new Wall(ui.getWidth()/2+256, 416, Platform.PlatformType.GRAY));
+        platforms.add(new Platform(-8, -2, Platform.PlatformType.BLUE));
+        platforms.add(new Platform(-8, +2, Platform.PlatformType.BLUE));
+        platforms.add(new Platform(-4, +2, Platform.PlatformType.BLUE));
+        platforms.add(new Platform(0, +2, Platform.PlatformType.RED));
+        platforms.add(new Platform(+4, +2, Platform.PlatformType.RED));
+        platforms.add(new Platform(+10, -2, Platform.PlatformType.GRAY));
+        platforms.add(new Platform(+14, -2, Platform.PlatformType.GRAY));
         players.add(new Player(ui.getWidth()/2-75, ui.getHeight()/2-100, Player.COLORS.BLUE));
         players.add(new Player(ui.getWidth()/2+25, ui.getHeight()/2-100, Player.COLORS.RED));
         colliders.addAll(platforms);
@@ -50,6 +40,40 @@ public class Level1 implements Scene {
         for (Player p : players)
         {
             p.setColliders(colliders);
+            p.setActive(false);
+        }
+        players.get(0).setActive(true);
+    }
+
+    /**
+     * Toggle which player is active
+     * Only toggles if the currently inactive player is also not kinematic
+     */
+    public void togglePlayers()
+    {
+        System.out.println("Toggling players!");
+        // If the first player is active and the second isn't frozen
+        if (players.get(0).isActive() && !players.get(1).isKinematic())
+        {
+            //Toggle
+            players.get(0).setActive(false);
+            players.get(1).setActive(true);
+        }
+        //If the second player is active and the first isn't frozen
+        else if (!players.get(0).isKinematic())
+        {
+            //Toggle
+            players.get(0).setActive(true);
+            players.get(1).setActive(false);
+        }
+        // If it gets this far the player cannot be toggled
+    }
+
+    @Override
+    public void onKeyEvent(int key, int scancode, int action, int mods) {
+        if (key==GLFW.GLFW_KEY_SPACE & action==GLFW.GLFW_PRESS)
+        {
+            togglePlayers();
         }
     }
 

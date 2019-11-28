@@ -7,6 +7,8 @@ public class FinalProject extends Game {
     {
         FinalProject game = new FinalProject();
         Scene lvl = new Level1();
+        game.registerGlobalCallbacks();
+
         game.setScene(lvl);
         game.gameLoop();
     }
