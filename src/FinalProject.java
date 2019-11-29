@@ -3,10 +3,13 @@ import org.lwjgl.opengl.GL11;
 import levels.Level1;
 
 public class FinalProject extends Game {
+    static Scene activeScene;
+
     public static void main(String[] args)
     {
         FinalProject game = new FinalProject();
         Scene lvl = new Level1();
+        activeScene = lvl;
         game.registerGlobalCallbacks();
 
         game.setScene(lvl);
