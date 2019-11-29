@@ -4,7 +4,9 @@ import edu.utc.game.Game;
 import edu.utc.game.GameObject;
 import edu.utc.game.Texture;
 import edu.utc.game.XYPair;
+import javafx.scene.shape.ArcTo;
 import org.lwjgl.opengl.GL11;
+import org.w3c.dom.css.Rect;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -75,7 +77,7 @@ public class Player extends GameObject {
             velocity.y = 0f;
         }
         else {
-            accel.y = 5f;
+            accel.y = 3.5f;
         }
 
         // update velocity based on acceleration
@@ -85,7 +87,7 @@ public class Player extends GameObject {
         if (this.active && Game.ui.keyPressed(GLFW_KEY_W))
         {
             if (grounded)
-                this.velocity.y = -1.5f;
+                this.velocity.y = -1f;
         }
 
         // update position based on velocity
@@ -94,8 +96,9 @@ public class Player extends GameObject {
 
         grounded = false;
 
-        for (int i = 0; i < 5; i++) {
-            this.translate((int) (x*0.2), (int) (y*0.2));
+        int numSteps = 6;
+        for (int i = 0; i < numSteps; i++) {
+            this.translate((int) (x/numSteps), (int) (y/numSteps));
         }
         float speed = 0.5f;
         if (this.active && Game.ui.keyPressed(GLFW_KEY_A))
@@ -162,35 +165,36 @@ public class Player extends GameObject {
         {
             if (test.intersects(coll.getHitbox()))
             {
+                int margin = 1;
                 if (coll.equals(this)) { continue;}
                 Rectangle hit = coll.getHitbox();
                 // If player right overlaps object left
                 // We hit on the left side so back out to the left
                 // If player bottom overlaps object top
                 // We hit on the top side of the object so back out to the top
-                if (test.y + test.height > hit.y && test.y < hit.y)
+                if (test.y + test.height > hit.y && deltaY > 0)
                 {
                     deltaY = hit.y - this.hitbox.y - this.hitbox.height;
                     grounded = true;
-                    System.out.println("Object top");
+                    //System.out.println("Object top");
                 }
-                else if (test.y < hit.y + hit.height && test.y + test.height > hit.y + hit.height)
+                else if (test.y + test.height > hit.y + hit.height && deltaY < 0)
                 {
                     deltaY = hit.y + hit.height - this.hitbox.y;
                     this.velocity.y = 0f;
-                    System.out.println("Object bottom");
+                    //System.out.println("Object bottom");
                 }
-                else if (test.x + test.width > hit.x && test.x < hit.x)
+                if (test.x + test.width > hit.x && deltaX > 0)
                 {
                     deltaX = hit.x - this.hitbox.x  - this.hitbox.width;
-                    System.out.println("Object left");
+                    //System.out.println("Object left");
                 }
                 // If player left overlaps object right
                 // We hit on the right side of the object so back out to the right
-                else if (test.x < hit.x + hit.width && test.x + test.width > hit.x + hit.width)
+                if (test.x < hit.x + hit.width && deltaX < 0)
                 {
                     deltaX = hit.x + hit.width - this.hitbox.x;
-                    System.out.println("Object right");
+                    //System.out.println("Object right");
                 }
             }
         }
