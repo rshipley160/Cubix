@@ -25,6 +25,8 @@ public class Player extends GameObject {
     private boolean active = true;
     private boolean grounded = false;
     private List<GameObject> colliders = new java.util.LinkedList();
+    private XYPair<Integer> startPos = new XYPair<>(0,0);
+
     {
         this.r = 1f;
         this.g = 1f;
@@ -36,6 +38,8 @@ public class Player extends GameObject {
     public Player(int x, int y, COLORS color){
         int size = 50;
         this.hitbox.setBounds(x,y,size,size);
+        startPos.x = x;
+        startPos.y = y;
         this.color = color;
         this.active = true;
     }
@@ -58,16 +62,25 @@ public class Player extends GameObject {
         this.colliders = colliders;
     }
 
+    public void respawn()
+    {
+        this.hitbox.x = startPos.x;
+        this.hitbox.y = startPos.y;
+        this.velocity.x = 0f;
+        this.velocity.y = 0f;
+    }
+
+
     @Override
     public void update(int delta) {
 
         Float time = delta / 1000f;
         if (this.hitbox.x < 0)
-            System.out.println("Left screen left");
+            respawn();
         if (this.hitbox.x > Game.ui.getWidth())
-            System.out.println("Left screen right");
+            respawn();
         if (this.hitbox.y > Game.ui.getHeight())
-            System.out.println("Left screen bottom");
+            respawn();
         if (this.kinematic)
             return;
 
@@ -96,10 +109,9 @@ public class Player extends GameObject {
 
         grounded = false;
 
-        int numSteps = 6;
-        for (int i = 0; i < numSteps; i++) {
-            this.translate((int) (x/numSteps), (int) (y/numSteps));
-        }
+
+        this.translate((int) x, (int) y);
+
         float speed = 0.5f;
         if (this.active && Game.ui.keyPressed(GLFW_KEY_A))
         {
@@ -195,6 +207,14 @@ public class Player extends GameObject {
                 {
                     deltaX = hit.x + hit.width - this.hitbox.x;
                     //System.out.println("Object right");
+                }
+                if (coll.getClass()==Exit.class)
+                {
+                    Exit exit = (Exit) coll;
+                    if (exit.getColor() == this.color)
+                    {
+                        System.out.println(this.color.toString()+" exit ready!");
+                    }
                 }
             }
         }
