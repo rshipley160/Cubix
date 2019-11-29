@@ -21,7 +21,8 @@ public class Level1 implements Scene {
     private List<GameObject> colliders = new java.util.LinkedList<>();
     private List<Player> players = new java.util.LinkedList<>();
     private List<Trap> traps = new java.util.LinkedList<>();
-    private Player activePlayer;
+    private Exit blueExit = new Exit(+10, -2, Player.COLORS.BLUE);
+    private Exit redExit = new Exit(+14, -2, Player.COLORS.RED);
 
     public Level1() {
         background.getHitbox().setBounds(0, 0, ui.getWidth(), ui.getHeight());
@@ -31,12 +32,12 @@ public class Level1 implements Scene {
         platforms.add(new Platform(-4, +2, Platform.PlatformType.BLUE));
         platforms.add(new Platform(0, +2, Platform.PlatformType.RED));
         platforms.add(new Platform(+4, +2, Platform.PlatformType.RED));
-        platforms.add(new Platform(+10, -2, Platform.PlatformType.GRAY));
-        platforms.add(new Platform(+14, -2, Platform.PlatformType.GRAY));
         players.add(new Player(ui.getWidth()/2-75, ui.getHeight()/2-100, Player.COLORS.BLUE));
         players.add(new Player(ui.getWidth()/2+25, ui.getHeight()/2-100, Player.COLORS.RED));
         colliders.addAll(platforms);
         colliders.addAll(players);
+        colliders.add(redExit);
+        colliders.add(blueExit);
         for (Player p : players)
         {
             p.setColliders(colliders);
@@ -105,6 +106,10 @@ public class Level1 implements Scene {
         {
             p.draw();
         }
+
+        blueExit.draw();
+        redExit.draw();
+
         return this;
     }
 }
