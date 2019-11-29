@@ -100,7 +100,7 @@ public class Player extends GameObject {
         if (this.active && Game.ui.keyPressed(GLFW_KEY_W))
         {
             if (grounded)
-                this.velocity.y = -1f;
+                this.velocity.y = -0.85f;
         }
 
         // update position based on velocity

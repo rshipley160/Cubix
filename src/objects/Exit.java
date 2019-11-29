@@ -8,11 +8,8 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 
 public class Exit extends Collider {
-    private int cellConversion = 32;
     private Texture texture = new Texture("res\\exits.png");
-    private Player.COLORS color = Player.COLORS.RED;
-    private static int ID = 1;
-    private String tag;
+    private Player.COLORS color;
 
     public Exit (int x, int y, Player.COLORS color)
     {
