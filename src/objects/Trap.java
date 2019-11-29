@@ -3,10 +3,14 @@ package objects;
 import edu.utc.game.Game;
 import edu.utc.game.GameObject;
 import edu.utc.game.Texture;
+import levels.Level;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
+
+import static objects.Player.COLORS.BLUE;
+import static objects.Player.COLORS.RED;
 
 public class Trap extends GameObject {
     private static Texture blueT = new Texture("res\\BlueArea.png");
@@ -19,7 +23,7 @@ public class Trap extends GameObject {
 
     public Trap (int x, int y, int size, Player.COLORS col)
     {
-        this.hitbox.setBounds(x, y, size, size);
+        this.hitbox.setBounds(Game.ui.getWidth()/2+x*32, Game.ui.getHeight()/2+y*32, size*32, size*32);
         this.color = col;
         switch (color)
         {
@@ -33,6 +37,10 @@ public class Trap extends GameObject {
         this.r = 1f;
         this.g = 1f;
         this.b = 1f;
+    }
+
+    public Player.COLORS getColor() {
+        return color;
     }
 
     public Trap (int x, int y, int size, Player.COLORS col, List<Player> players)
@@ -91,18 +99,49 @@ public class Trap extends GameObject {
         super.deactivate();
     }
 
+    public void activate()
+    {
+        active = true;
+    }
+
+    public void toggle() {
+        if (active)
+        {
+            deactivate();
+        }
+        else {
+            activate();
+        }
+    }
+
+
     @Override
     public void update(int delta) {
         if (active) {
-            for (Player p : players) {
-                if (this.intersects(p) && this.intersection(p).equals(p.getHitbox())) {
-                    if (p.getColor().equals(this.color)) {
-                        p.freeze();
-                        capturedPlayers.add(p);
-                    } else {
-                        p.unfreeze();
+            switch (this.color)
+            {
+                case RED:
+                    if (this.intersects(Level.getPlayer(RED)))// && this.intersection(Level.getPlayer(RED)).equals(Level.getPlayer(RED).getHitbox())) {
+                    {
+                        if (Level.getPlayer(RED).getColor().equals(this.color)) {
+                            Level.getPlayer(RED).freeze();
+                            capturedPlayers.add(Level.getPlayer(RED));
+                        } else {
+                            Level.getPlayer(RED).unfreeze();
+                        }
                     }
-                }
+                    return;
+                default:
+                    if (this.intersects(Level.getPlayer(BLUE)))// && this.intersection(Level.getPlayer(BLUE)).equals(Level.getPlayer(BLUE).getHitbox())) {
+                    {
+                        if (Level.getPlayer(BLUE).getColor().equals(this.color)) {
+                            Level.getPlayer(BLUE).freeze();
+                            capturedPlayers.add(Level.getPlayer(BLUE));
+                        } else {
+                            Level.getPlayer(BLUE).unfreeze();
+                        }
+                    }
+                    return;
             }
         }
 

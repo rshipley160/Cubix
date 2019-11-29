@@ -5,6 +5,7 @@ import edu.utc.game.Scene;
 import edu.utc.game.Texture;
 import objects.Exit;
 import objects.Player;
+import objects.Switch;
 import objects.Trap;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -23,11 +24,14 @@ public class Level implements Scene {
     protected List<GameObject> platforms = new java.util.LinkedList<>();
 
     //Player traps
-    protected List<Trap> traps = new java.util.LinkedList<>();
+    protected static List<Trap> traps = new java.util.LinkedList<>();
+
+    //Trap activation / de-activation switches
+    protected List<Switch> switches = new java.util.LinkedList<>();
 
     //Player objects
-    protected Player redPlayer;
-    protected Player bluePlayer;
+    protected static Player redPlayer;
+    protected static Player bluePlayer;
 
     //Level exits
     protected Exit blueExit;
@@ -78,6 +82,12 @@ public class Level implements Scene {
         bg.draw(background);
 
         //Update moving parts of the environment
+        //Switches control Traps, so they need to be updated in this order
+        for (Switch s : switches)
+        {
+            s.update(delta);
+        }
+
         for (Trap t : traps)
         {
             t.update(delta);
@@ -90,21 +100,46 @@ public class Level implements Scene {
         bluePlayer.update(delta);
 
 
-        for (GameObject p : platforms){
-            p.draw();
-        }
         for (Trap t : traps)
         {
             t.draw();
         }
 
+        for (GameObject p : platforms){
+            p.draw();
+        }
+
+
+
         bluePlayer.draw();
         redPlayer.draw();
+
+        //Switches are drawn in front of the player
+        for (Switch s : switches)
+        {
+            s.draw();
+        }
 
         //Exits have to be drawn after players for glow effect to show on them
         blueExit.draw();
         redExit.draw();
 
         return this;
+    }
+
+    public static Player getPlayer(Player.COLORS color)
+    {
+        switch (color)
+        {
+            case RED:
+                return redPlayer;
+            default:
+                return bluePlayer;
+        }
+    }
+
+    public static List<Trap> getTraps()
+    {
+        return traps;
     }
 }
