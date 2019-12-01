@@ -1,13 +1,11 @@
-package objects;
+package cubix.objects;
 
+import cubix.FinalProject;
 import edu.utc.game.Game;
 import edu.utc.game.GameObject;
 import edu.utc.game.Texture;
-import levels.Level;
+import cubix.levels.Level;
 import org.lwjgl.opengl.GL11;
-
-
-import java.awt.*;
 
 public class Switch extends GameObject {
     private Texture texture = new Texture("res\\switches.png");
@@ -28,7 +26,7 @@ public class Switch extends GameObject {
             this.on = false;
         else
             this.on = true;
-        for (Trap t : Level.getTraps())
+        for (Trap t : FinalProject.currentLevel().getTraps())
         {
             if (t.getColor() == this.color) {
                 t.toggle();

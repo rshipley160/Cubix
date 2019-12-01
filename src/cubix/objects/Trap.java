@@ -1,16 +1,15 @@
-package objects;
+package cubix.objects;
 
 import edu.utc.game.Game;
 import edu.utc.game.GameObject;
 import edu.utc.game.Texture;
-import levels.Level;
-import org.lwjgl.glfw.GLFW;
+import cubix.levels.Level;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-import static objects.Player.COLORS.BLUE;
-import static objects.Player.COLORS.RED;
+import static cubix.objects.Player.COLORS.BLUE;
+import static cubix.objects.Player.COLORS.RED;
 
 public class Trap extends GameObject {
     private static Texture blueT = new Texture("res\\BlueArea.png");

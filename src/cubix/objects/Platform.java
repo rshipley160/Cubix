@@ -1,4 +1,4 @@
-package objects;
+package cubix.objects;
 
 import edu.utc.game.Game;
 import edu.utc.game.GameObject;

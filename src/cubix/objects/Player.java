@@ -1,12 +1,10 @@
-package objects;
+package cubix.objects;
 
 import edu.utc.game.Game;
 import edu.utc.game.GameObject;
 import edu.utc.game.Texture;
 import edu.utc.game.XYPair;
-import javafx.scene.shape.ArcTo;
 import org.lwjgl.opengl.GL11;
-import org.w3c.dom.css.Rect;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -26,6 +24,7 @@ public class Player extends GameObject {
     private boolean grounded = false;
     private List<GameObject> colliders = new java.util.LinkedList();
     private XYPair<Integer> startPos = new XYPair<>(0,0);
+    private boolean onExit = false;
 
     {
         this.r = 1f;
@@ -37,9 +36,9 @@ public class Player extends GameObject {
 
     public Player(int x, int y, COLORS color){
         int size = 50;
-        this.hitbox.setBounds(x,y,size,size);
-        startPos.x = x;
-        startPos.y = y;
+        this.hitbox.setBounds(Game.ui.getWidth()/2+x*32,Game.ui.getHeight()/2+y*32,size,size);
+        startPos.x = Game.ui.getWidth()/2+x*32;
+        startPos.y = Game.ui.getHeight()/2+y*32;
         this.color = color;
         this.active = true;
     }
@@ -57,6 +56,11 @@ public class Player extends GameObject {
         return kinematic;
     }
 
+    public boolean onExit()
+    {
+        return onExit;
+    }
+
     public void setColliders(List<GameObject> colliders)
     {
         this.colliders = colliders;
@@ -68,6 +72,7 @@ public class Player extends GameObject {
         this.hitbox.y = startPos.y;
         this.velocity.x = 0f;
         this.velocity.y = 0f;
+        this.kinematic=false;
     }
 
 
@@ -126,58 +131,17 @@ public class Player extends GameObject {
 
     }
 
-    public void checkCollisions()
-    {
-        int newX = this.hitbox.x;
-        int newY = this.hitbox.y;
-        for (GameObject p : colliders)
-        {
-            if (p.equals(this))
-                continue;
-            if (this.intersects(p))
-            {
-                if (this.hitbox.y < p.getHitbox().y) {
-                    this.accel.y = 0f;
-                    this.velocity.y = 0f;
-
-                    System.out.println("Fell onto something!");
-
-                    newY = p.getHitbox().y - this.hitbox.height;
-
-                    grounded = true;
-                }
-
-                else if (this.hitbox.y > p.getHitbox().y) {// && this.hitbox.y + this.hitbox.height > p.getHitbox().y  + p.getHitbox().height) {
-                    this.velocity.y = 0f;
-
-                    System.out.println("Hit my head!");
-
-                    newY = p.getHitbox().y + p.getHitbox().height;
-
-                }
-
-            }
-            if (this.hitbox.x < 0) {
-                newX = 0;
-            }
-            if (this.hitbox.x + this.hitbox.width > Game.ui.getWidth()) {
-                newX = Game.ui.getWidth() - this.hitbox.width;
-            }
-        }
-        this.hitbox.setLocation(newX, newY);
-    }
-
     public void translate(int x, int y)
     {
         Rectangle test = new Rectangle(this.hitbox.x + x, this.hitbox.y+y, this.hitbox.width, this.hitbox.height);
         int deltaX = x;
         int deltaY = y;
         test.translate(deltaX, deltaY);
+        onExit = false;
         for (GameObject coll : colliders)
         {
             if (test.intersects(coll.getHitbox()))
             {
-                int margin = 1;
                 if (coll.equals(this)) { continue;}
                 Rectangle hit = coll.getHitbox();
                 // If player right overlaps object left
@@ -208,12 +172,14 @@ public class Player extends GameObject {
                     deltaX = hit.x + hit.width - this.hitbox.x;
                     //System.out.println("Object right");
                 }
-                if (coll.getClass()==Exit.class)
+                if (coll.getClass()== Exit.class)
                 {
                     Exit exit = (Exit) coll;
-                    if (exit.getColor() == this.color)
+                    if (    exit.getColor() == this.color   &&
+                            this.hitbox.x >= exit.getHitbox().x+exit.getHitbox().width* 0.1  &&
+                            this.hitbox.x <= exit.getHitbox().x+exit.getHitbox().width* 0.9  )
                     {
-                        System.out.println(this.color.toString()+" exit ready!");
+                        onExit = true;
                     }
                 }
             }

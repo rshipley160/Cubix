@@ -1,19 +1,37 @@
+package cubix;
+
 import edu.utc.game.*;
 import org.lwjgl.opengl.GL11;
-import levels.Level1;
+import cubix.levels.*;
+
+import java.util.List;
 
 public class FinalProject extends Game {
-    static Scene activeScene;
+    static List<Scene> levels = new java.util.ArrayList();
+    static int currentIndex = 0;
 
     public static void main(String[] args)
     {
         FinalProject game = new FinalProject();
-        Scene lvl = new Level1();
-        activeScene = lvl;
+
         game.registerGlobalCallbacks();
 
-        game.setScene(lvl);
+        levels.add(new Level1());
+        levels.add(new Level2());
+        levels.add(new Level3());
+
+        game.setScene(levels.get(0));
         game.gameLoop();
+    }
+
+    public static List<Scene> scenes()
+    {
+        return levels;
+    }
+
+    public static Level currentLevel()
+    {
+        return (Level) levels.get(currentIndex);
     }
 
     public FinalProject() {

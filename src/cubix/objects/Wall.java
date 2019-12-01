@@ -1,6 +1,5 @@
-package objects;
+package cubix.objects;
 
-import edu.utc.game.Game;
 import edu.utc.game.GameObject;
 import edu.utc.game.Texture;
 import org.lwjgl.opengl.GL11;
