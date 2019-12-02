@@ -3,6 +3,7 @@ package cubix.levels;
 import cubix.FinalProject;
 import edu.utc.game.GameObject;
 import edu.utc.game.Scene;
+import edu.utc.game.Sound;
 import edu.utc.game.Texture;
 import cubix.objects.Exit;
 import cubix.objects.Player;
@@ -50,11 +51,13 @@ public class Level implements Scene {
     private static boolean starting = true;
     private static boolean exiting = false;
     private static int transitionTimer = 0;
+    private static Sound BGM = new Sound("res\\BGM.wav");
 
     static
     {
         background.getHitbox().setBounds(0, 0, ui.getWidth(), ui.getHeight());
         transition.getHitbox().setBounds(0,0,ui.getWidth(),ui.getHeight());
+        BGM.play();
     }
 
     {

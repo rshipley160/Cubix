@@ -3,6 +3,7 @@ package cubix.objects;
 import cubix.FinalProject;
 import edu.utc.game.Game;
 import edu.utc.game.GameObject;
+import edu.utc.game.Sound;
 import edu.utc.game.Texture;
 import cubix.levels.Level;
 import org.lwjgl.opengl.GL11;
@@ -13,6 +14,7 @@ public class Switch extends GameObject {
     private boolean on = false;
     private int timer = 0;
     private Player.COLORS touching = null;
+    private Sound sound = new Sound("res\\switch.wav");
 
     public Switch (int x, int y, Player.COLORS color)
     {
@@ -22,6 +24,7 @@ public class Switch extends GameObject {
 
     public void toggle()
     {
+        sound.play();
         if (this.on)
             this.on = false;
         else

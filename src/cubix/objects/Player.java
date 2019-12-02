@@ -1,9 +1,6 @@
 package cubix.objects;
 
-import edu.utc.game.Game;
-import edu.utc.game.GameObject;
-import edu.utc.game.Texture;
-import edu.utc.game.XYPair;
+import edu.utc.game.*;
 import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -26,6 +23,7 @@ public class Player extends GameObject {
     private XYPair<Integer> startPos = new XYPair<>(0,0);
     private boolean onExit = false;
     public XYPair<Double> delta = new XYPair(0,0);
+    private Sound jump = new Sound("res\\jump.wav");
 
     {
         this.r = 1f;
@@ -105,8 +103,10 @@ public class Player extends GameObject {
 
         if (this.active && Game.ui.keyPressed(GLFW_KEY_W))
         {
-            if (grounded)
+            if (grounded) {
+                jump.play();
                 this.velocity.y = -0.85f;
+            }
         }
 
         // update position based on velocity
