@@ -37,6 +37,11 @@ public class Switch extends GameObject {
         }
     }
 
+    public void turnOn(boolean on)
+    {
+        this.on = on;
+    }
+
     @Override
     public void draw()
     {

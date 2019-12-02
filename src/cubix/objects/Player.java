@@ -1,5 +1,6 @@
 package cubix.objects;
 
+import cubix.FinalProject;
 import edu.utc.game.*;
 import org.lwjgl.opengl.GL11;
 
@@ -79,12 +80,8 @@ public class Player extends GameObject {
     public void update(int delta) {
 
         Float time = delta / 1000f;
-        if (this.hitbox.x < 0)
-            respawn();
-        if (this.hitbox.x > Game.ui.getWidth())
-            respawn();
-        if (this.hitbox.y > Game.ui.getHeight())
-            respawn();
+        if (this.hitbox.x < 0 || this.hitbox.x > Game.ui.getWidth() || this.hitbox.y > Game.ui.getHeight())
+            FinalProject.currentLevel().reset();
         if (this.kinematic)
             return;
 

@@ -98,8 +98,8 @@ public class Level implements Scene {
 
         if (key== GLFW.GLFW_KEY_R & action==GLFW.GLFW_PRESS)
         {
-            redPlayer.respawn();
-            bluePlayer.respawn();
+            reset();
+
         }
     }
 
@@ -213,5 +213,19 @@ public class Level implements Scene {
     public List<Trap> getTraps()
     {
         return traps;
+    }
+
+    public void reset()
+    {
+        redPlayer.respawn();
+        bluePlayer.respawn();
+        for (Switch s : switches)
+        {
+            s.turnOn(false);
+        }
+        for (Trap t : traps)
+        {
+            t.activate();
+        }
     }
 }
