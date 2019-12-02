@@ -52,6 +52,7 @@ public class Level implements Scene {
     private static boolean exiting = false;
     private static int transitionTimer = 0;
     private static Sound BGM = new Sound("res\\BGM.wav");
+    private static Sound reset = new Sound("res\\reset.wav");
 
     static
     {
@@ -219,6 +220,7 @@ public class Level implements Scene {
 
     public void reset()
     {
+        reset.play();
         redPlayer.respawn();
         bluePlayer.respawn();
         for (Switch s : switches)

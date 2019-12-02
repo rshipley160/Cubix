@@ -24,7 +24,7 @@ public class Player extends GameObject {
     private XYPair<Integer> startPos = new XYPair<>(0,0);
     private boolean onExit = false;
     public XYPair<Double> delta = new XYPair(0,0);
-    //private Sound jump = new Sound("res\\jump.wav");
+    private Sound jump = new Sound("res\\jump.wav");
 
     {
         this.r = 1f;
@@ -101,7 +101,7 @@ public class Player extends GameObject {
         if (this.active && Game.ui.keyPressed(GLFW_KEY_W))
         {
             if (grounded) {
-                //jump.play();
+                jump.play();
                 this.velocity.y = -0.85f;
             }
         }

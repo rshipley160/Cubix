@@ -14,7 +14,7 @@ public class Switch extends GameObject {
     private boolean on = false;
     private int timer = 0;
     private Player.COLORS touching = null;
-    //private Sound sound = new Sound("res\\switch.wav");
+    private Sound sound = new Sound("res\\switch.wav");
 
     public Switch (int x, int y, Player.COLORS color)
     {
@@ -24,7 +24,7 @@ public class Switch extends GameObject {
 
     public void toggle()
     {
-        //sound.play();
+        sound.play();
         if (this.on)
             this.on = false;
         else
