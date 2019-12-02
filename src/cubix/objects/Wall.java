@@ -1,5 +1,6 @@
 package cubix.objects;
 
+import edu.utc.game.Game;
 import edu.utc.game.GameObject;
 import edu.utc.game.Texture;
 import org.lwjgl.opengl.GL11;
@@ -12,7 +13,7 @@ public class Wall extends GameObject {
 
     private float num;
     public Wall(int x, int y, Platform.PlatformType type){
-        this.hitbox.setBounds(x,y,width,height);
+        this.hitbox.setBounds(Game.ui.getWidth()/2+x*32,Game.ui.getHeight()/2+y*32,width,height);
         this.setColor(1f, 1f, 1f);
         this.num = type.num;
     }

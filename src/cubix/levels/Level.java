@@ -148,13 +148,11 @@ public class Level implements Scene {
 
         //Win condition
         if (bluePlayer.onExit() && redPlayer.onExit()) {
-            System.out.println("On exits");
             if (!exiting)
             {
                 exiting = true;
                 transitionTimer = 0;
             }
-            System.out.println(transitionTimer);
         }
 
         if (starting)
@@ -165,7 +163,6 @@ public class Level implements Scene {
                     bluePlayer.respawn();
                     redPlayer.respawn();
                 }
-                System.out.println("Transitioning from start");
                 transition.setColor(1f, 1f, 1f, (1 - transitionTimer / 2000f));
                 transitionTimer += delta;
             }
@@ -193,8 +190,6 @@ public class Level implements Scene {
                 transitionTimer = 0;
                 return cubix.FinalProject.scenes().get(this.currentScene + 1);
             }
-
-
         }
         return this;
     }

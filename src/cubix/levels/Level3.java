@@ -1,17 +1,15 @@
-package levels;
+package cubix.levels;
 
-import static edu.utc.game.Game.ui;
+import cubix.objects.*;
+import edu.utc.game.Scene;
 
-import objects.*;
-
-
-public class Level1 extends Level {
-    public Level1()
+public class Level3 extends Level {
+    public Level3()
     {
         //Environment creation
-        platforms.add(new Platform(-8, -2, Platform.PlatformType.BLUE));
-        platforms.add(new Platform(-8, +2, Platform.PlatformType.BLUE));
-        platforms.add(new Platform(-4, +2, Platform.PlatformType.BLUE));
+        platforms.add(new Platform(-8, -1, Platform.PlatformType.RED));
+        platforms.add(new Platform(-8, +2, Platform.PlatformType.RED));
+        platforms.add(new Platform(-4, +2, Platform.PlatformType.RED));
         platforms.add(new Platform(0, +2, Platform.PlatformType.RED));
         platforms.add(new Platform(+4, +2, Platform.PlatformType.RED));
 
@@ -23,11 +21,11 @@ public class Level1 extends Level {
         colliders.add(redExit);
 
         //Player setup
-        bluePlayer = new Player(ui.getWidth()/2-75, ui.getHeight()/2-100, Player.COLORS.BLUE);
+        bluePlayer = new Player(-3, 0, Player.COLORS.BLUE);
         bluePlayer.setActive(true);
         colliders.add(bluePlayer);
 
-        redPlayer =  new Player(ui.getWidth()/2+25, ui.getHeight()/2-100, Player.COLORS.RED);
+        redPlayer =  new Player(+3, 0, Player.COLORS.RED);
         redPlayer.setActive(false);
         colliders.add(redPlayer);
 
