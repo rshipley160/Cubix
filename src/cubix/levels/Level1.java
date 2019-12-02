@@ -3,6 +3,7 @@ package cubix.levels;
 import static cubix.objects.Player.COLORS.BLUE;
 import static cubix.objects.Player.COLORS.RED;
 
+import cubix.FinalProject;
 import cubix.objects.*;
 
 public class Level1 extends Level {
@@ -33,8 +34,5 @@ public class Level1 extends Level {
         //Set each player's colliders
         bluePlayer.setColliders(colliders);
         redPlayer.setColliders(colliders);
-
-        bluePlayer.respawn();
-        redPlayer.respawn();
     }
 }

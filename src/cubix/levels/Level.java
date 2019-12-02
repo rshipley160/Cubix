@@ -179,7 +179,6 @@ public class Level implements Scene {
                 transition.setColor(1f, 1f, 1f, transitionTimer / 1500f);
                 transition.draw();
                 transitionTimer += delta;
-                System.out.println(transitionTimer);
             }
             else {
                 transition.draw();
@@ -188,6 +187,7 @@ public class Level implements Scene {
                 exiting = false;
                 starting = true;
                 transitionTimer = 0;
+                FinalProject.currentIndex = this.currentScene + 1;
                 return cubix.FinalProject.scenes().get(this.currentScene + 1);
             }
         }

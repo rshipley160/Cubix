@@ -8,7 +8,7 @@ import java.util.List;
 
 public class FinalProject extends Game {
     static List<Scene> levels = new java.util.ArrayList();
-    static int currentIndex = 0;
+    public static int currentIndex = 0;
 
     public static void main(String[] args)
     {
