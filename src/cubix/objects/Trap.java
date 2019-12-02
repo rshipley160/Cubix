@@ -116,13 +116,16 @@ public class Trap extends GameObject {
 
     @Override
     public void update(int delta) {
-        if (active) {
+        if (active)
+        {
             switch (this.color)
             {
                 case RED:
-                    if (this.intersects(Level.getPlayer(RED)))// && this.intersection(Level.getPlayer(RED)).equals(Level.getPlayer(RED).getHitbox())) {
+                    if (this.intersects(Level.getPlayer(RED)) && this.intersection(Level.getPlayer(RED)).equals(Level.getPlayer(RED).getHitbox()))
                     {
                         if (Level.getPlayer(RED).getColor().equals(this.color)) {
+                            if (Level.getPlayer(RED).isActive())
+                                Level.togglePlayers();
                             Level.getPlayer(RED).freeze();
                             capturedPlayers.add(Level.getPlayer(RED));
                         } else {
@@ -131,9 +134,11 @@ public class Trap extends GameObject {
                     }
                     return;
                 default:
-                    if (this.intersects(Level.getPlayer(BLUE)))// && this.intersection(Level.getPlayer(BLUE)).equals(Level.getPlayer(BLUE).getHitbox())) {
+                    if (this.intersects(Level.getPlayer(BLUE)) && this.intersection(Level.getPlayer(BLUE)).equals(Level.getPlayer(BLUE).getHitbox()))
                     {
                         if (Level.getPlayer(BLUE).getColor().equals(this.color)) {
+                            if (Level.getPlayer(BLUE).isActive())
+                                Level.togglePlayers();
                             Level.getPlayer(BLUE).freeze();
                             capturedPlayers.add(Level.getPlayer(BLUE));
                         } else {
@@ -143,6 +148,5 @@ public class Trap extends GameObject {
                     return;
             }
         }
-
     }
 }

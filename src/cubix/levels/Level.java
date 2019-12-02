@@ -68,21 +68,23 @@ public class Level implements Scene {
      * Toggle which player is active
      * Only toggles if the currently inactive player is also not kinematic
      */
-    public void togglePlayers()
+    public static void togglePlayers()
     {
+        Player blue = getPlayer(Player.COLORS.BLUE);
+        Player red = getPlayer(Player.COLORS.RED);
         // If the first player is active and the second isn't frozen
-        if (bluePlayer.isActive() && !redPlayer.isKinematic())
+        if (blue.isActive() && !red.isKinematic())
         {
             //Toggle
-            bluePlayer.setActive(false);
-            redPlayer.setActive(true);
+            blue.setActive(false);
+            red.setActive(true);
         }
         //If the second player is active and the first isn't frozen
-        else if (!bluePlayer.isKinematic())
+        else if (!blue.isKinematic())
         {
             //Toggle
-            bluePlayer.setActive(true);
-            redPlayer.setActive(false);
+            blue.setActive(true);
+            red.setActive(false);
         }
         // If it gets this far the player cannot be toggled
     }

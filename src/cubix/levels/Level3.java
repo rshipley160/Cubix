@@ -17,7 +17,7 @@ public class Level3 extends Level {
         traps.add(new Trap(+4, -2, 4, Player.COLORS.RED));
         traps.add(new Trap(-4, -2, 4, Player.COLORS.BLUE));
 
-        switches.add(new Switch(-9, +1, Player.COLORS.RED));
+        switches.add(new Switch(-10, +1, Player.COLORS.RED));
         switches.add(new Switch(+2, +1, Player.COLORS.BLUE));
 
         blueExit = new Exit(+10, -1, Player.COLORS.BLUE);
