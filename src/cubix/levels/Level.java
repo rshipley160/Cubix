@@ -108,7 +108,9 @@ public class Level implements Scene {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // clear the framebuffer
         GL11.glColor3f(1, 1, 1);
         bg.draw(background);
-
+        if (delta > 1000/30) {
+            delta = 1000/30;
+        }
         //Update moving parts of the environment
         //Switches control Traps, so they need to be updated in this order
         for (Switch s : switches)

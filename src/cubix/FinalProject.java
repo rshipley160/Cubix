@@ -37,7 +37,7 @@ public class FinalProject extends Game {
     public FinalProject() {
         // inherited from the Game class, this sets up the window and allows us to access
         // Game.ui
-        initUI(1280, 768, "Final Project");
+        initUI(1280, 768, "Cubix");
 
         // screen clear is white (this could go in drawFrame if you wanted it to change
         GL11.glClearColor(0f, 0f, 0f, 0f);
