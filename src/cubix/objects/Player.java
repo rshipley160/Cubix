@@ -25,6 +25,7 @@ public class Player extends GameObject {
     private List<GameObject> colliders = new java.util.LinkedList();
     private XYPair<Integer> startPos = new XYPair<>(0,0);
     private boolean onExit = false;
+    public XYPair<Double> delta = new XYPair(0,0);
 
     {
         this.r = 1f;
@@ -109,26 +110,27 @@ public class Player extends GameObject {
         }
 
         // update position based on velocity
-        double x = delta*velocity.x;
-        double y = delta*velocity.y;
+        this.delta.x = (double) delta*velocity.x;
+        this.delta.y = (double) delta*velocity.y;
 
         grounded = false;
 
 
-        this.translate((int) x, (int) y);
+
 
         float speed = 0.5f;
         if (this.active && Game.ui.keyPressed(GLFW_KEY_A))
         {
-            this.translate((int)(-speed *delta), 0);
+            this.delta.x -= speed * delta;
         }
 
         if (this.active && Game.ui.keyPressed(GLFW_KEY_D))
         {
-            this.translate((int)(speed *delta), 0);
+            this.delta.x += speed * delta;
         }
 
-
+        this.translate(this.delta.x.intValue(),0);
+        this.translate(0,this.delta.y.intValue());
     }
 
     public void translate(int x, int y)
@@ -152,25 +154,21 @@ public class Player extends GameObject {
                 {
                     deltaY = hit.y - this.hitbox.y - this.hitbox.height;
                     grounded = true;
-                    //System.out.println("Object top");
                 }
                 else if (test.y + test.height > hit.y + hit.height && deltaY < 0)
                 {
                     deltaY = hit.y + hit.height - this.hitbox.y;
                     this.velocity.y = 0f;
-                    //System.out.println("Object bottom");
                 }
                 if (test.x + test.width > hit.x && deltaX > 0)
                 {
                     deltaX = hit.x - this.hitbox.x  - this.hitbox.width;
-                    //System.out.println("Object left");
                 }
                 // If player left overlaps object right
                 // We hit on the right side of the object so back out to the right
                 if (test.x < hit.x + hit.width && deltaX < 0)
                 {
                     deltaX = hit.x + hit.width - this.hitbox.x;
-                    //System.out.println("Object right");
                 }
                 if (coll.getClass()== Exit.class)
                 {
