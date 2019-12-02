@@ -1,5 +1,6 @@
 package cubix.levels;
 
+import cubix.FinalProject;
 import edu.utc.game.GameObject;
 import edu.utc.game.Scene;
 import edu.utc.game.Texture;
@@ -36,8 +37,8 @@ public class Level implements Scene {
     protected List<Switch> switches = new java.util.LinkedList<>();
 
     //Player cubix.objects
-    protected static Player redPlayer;
-    protected static Player bluePlayer;
+    protected Player redPlayer;
+    protected Player bluePlayer;
 
     //Level exits
     protected Exit blueExit;
@@ -57,9 +58,6 @@ public class Level implements Scene {
     }
 
     {
-        platforms.clear();
-        traps.clear();
-        switches.clear();
         currentScene = sceneIndex++;
     }
 
@@ -148,11 +146,6 @@ public class Level implements Scene {
         blueExit.draw();
         redExit.draw();
 
-
-
-
-
-
         //Win condition
         if (bluePlayer.onExit() && redPlayer.onExit()) {
             System.out.println("On exits");
@@ -177,7 +170,6 @@ public class Level implements Scene {
                 transitionTimer += delta;
             }
             else {
-                System.out.println("Start sequence finished");
                 starting = false;
                 transitionTimer = 0;
             }
@@ -190,7 +182,6 @@ public class Level implements Scene {
                 transition.setColor(1f, 1f, 1f, transitionTimer / 1500f);
                 transition.draw();
                 transitionTimer += delta;
-                System.out.println("Transitioning to exit");
                 System.out.println(transitionTimer);
             }
             else {
@@ -200,7 +191,6 @@ public class Level implements Scene {
                 exiting = false;
                 starting = true;
                 transitionTimer = 0;
-                System.out.println("Exiting");
                 return cubix.FinalProject.scenes().get(this.currentScene + 1);
             }
 
@@ -214,9 +204,9 @@ public class Level implements Scene {
         switch (color)
         {
             case RED:
-                return redPlayer;
+                return FinalProject.currentLevel().redPlayer;
             default:
-                return bluePlayer;
+                return FinalProject.currentLevel().bluePlayer;
         }
     }
 
