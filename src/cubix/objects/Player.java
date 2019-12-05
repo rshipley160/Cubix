@@ -41,6 +41,7 @@ public class Player extends GameObject {
         startPos.y = Game.ui.getHeight()/2+y*32;
         this.color = color;
         this.active = true;
+        jump.setGain(0.3f);
     }
 
     public void setActive(boolean active) {

@@ -20,6 +20,7 @@ public class Switch extends GameObject {
     {
         this.hitbox.setBounds(Game.ui.getWidth()/2+x*32,Game.ui.getHeight()/2+y*32, 32, 32);
         this.color = color;
+        sound.setGain(0.4f);
     }
 
     public void toggle()
