@@ -21,8 +21,8 @@ public class FinalProject extends Game {
         levels.add(new Level3());
 
         Menu menu = new Menu();
-        //levels.add(0, menu);
-        game.setScene(levels.get(0));
+
+        game.setScene(menu);
         game.gameLoop();
     }
 

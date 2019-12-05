@@ -10,15 +10,40 @@ import java.util.List;
 
 import static cubix.objects.Player.COLORS.BLUE;
 import static cubix.objects.Player.COLORS.RED;
+import static edu.utc.game.Game.ui;
 
-public class Menu extends Level {
+public class Menu implements Scene {
+    private static class Transition extends GameObject
+    {
+        @Override
+        public void setColor(float r, float g, float b, float a) {
+            super.setColor(r, g, b, a);
+        }
+    }
+
+    private static Transition transition = new Transition();
+
     private List<Button> buttons = new java.util.ArrayList<>();
+
+    private List<GameObject> platforms = new java.util.LinkedList<>();
+
+    private Player redPlayer = new Player(-13, +4, RED);
+    private Player bluePlayer = new Player(-9, +4, BLUE);
+
+    //GO for background image
+    public final static GameObject background = new GameObject();
+
+    //Background texture
+    public final static Texture bg = new Texture("res\\background.png");
+
     public Menu()
     {
-        buttons.add(new Button(+3, -4, 4,2,"Start Game", FinalProject.levels().get(0)));
-        buttons.get(0).setColor(0.7f, 0.7f, 1f);
-        redPlayer = new Player(-13, +4, RED);
-        bluePlayer = new Player(-9, +4, BLUE);
+        background.getHitbox().setBounds(0, 0, ui.getWidth(), ui.getHeight());
+        transition.getHitbox().setBounds(0,0,ui.getWidth(),ui.getHeight());
+
+        buttons.add(new Button(+3, -5, BLUE,"Start Game"));
+        buttons.add(new Button(+3, +3, RED,"Exit"));
+
 
         platforms.add(new Platform(-14, +6, Platform.PlatformType.BLUE));
         platforms.add(new Platform(-10, +6, Platform.PlatformType.RED));
@@ -30,6 +55,7 @@ public class Menu extends Level {
         platforms.add(new Wall(-6, +3, Platform.PlatformType.GRAY));
         platforms.add(new Wall(-6, -1, Platform.PlatformType.WHITE));
 
+        List<GameObject> colliders = new java.util.LinkedList<>();
         colliders.addAll(platforms);
         colliders.add(redPlayer);
         colliders.add(bluePlayer);
@@ -37,21 +63,29 @@ public class Menu extends Level {
         redPlayer.setColliders(colliders);
         redPlayer.setActive(true);
         bluePlayer.setActive(true);
-        traps.clear();
     }
 
     @Override
     public void onKeyEvent(int key, int scancode, int action, int mods) {
         if (key== GLFW.GLFW_KEY_SPACE & action==GLFW.GLFW_PRESS)
         {
-            System.out.println("Toggling!");
-            togglePlayers();
-        }
-
-        if (key== GLFW.GLFW_KEY_R & action==GLFW.GLFW_PRESS)
-        {
-            reset();
-
+            // If the first player is active and the second isn't frozen
+            if (bluePlayer.isActive() && !redPlayer.isKinematic())
+            {
+                //Toggle
+                bluePlayer.setActive(false);
+                redPlayer.setActive(true);
+            }
+            //If the second player is active and the first isn't frozen
+            else if (!bluePlayer.isKinematic())
+            {
+                //Toggle
+                bluePlayer.setActive(true);
+                redPlayer.setActive(false);
+            }
+            else {
+                // If it gets this far the player cannot be toggled
+            }
         }
     }
 

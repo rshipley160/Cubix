@@ -18,8 +18,15 @@ import static edu.utc.game.Game.ui;
 
 public class Level implements Scene {
 
+    private static class Transition extends GameObject
+    {
+        @Override
+        public void setColor(float r, float g, float b, float a) {
+            super.setColor(r, g, b, a);
+        }
+    }
 
-    private static GameObject transition = new GameObject();
+    private static Transition transition = new Transition();
 
     //Current level
     protected static int sceneIndex = 0;
