@@ -17,10 +17,7 @@ import java.util.List;
 import static edu.utc.game.Game.ui;
 
 public class Level implements Scene {
-    //GO for background image
-    private static GameObject background = new GameObject();
-    //Background texture
-    private static Texture bg = new Texture("res\\background.png");
+
 
     private static GameObject transition = new GameObject();
 
@@ -54,6 +51,11 @@ public class Level implements Scene {
     private static Sound BGM = new Sound("res\\BGM.wav");
     private static Sound reset = new Sound("res\\reset.wav");
 
+    //GO for background image
+    public final static GameObject background = new GameObject();
+    //Background texture
+    public final static Texture bg = new Texture("res\\background.png");
+
     static
     {
         background.getHitbox().setBounds(0, 0, ui.getWidth(), ui.getHeight());
@@ -76,6 +78,7 @@ public class Level implements Scene {
         // If the first player is active and the second isn't frozen
         if (blue.isActive() && !red.isKinematic())
         {
+            System.out.println("Toggling blue to red");
             //Toggle
             blue.setActive(false);
             red.setActive(true);
@@ -87,7 +90,10 @@ public class Level implements Scene {
             blue.setActive(true);
             red.setActive(false);
         }
-        // If it gets this far the player cannot be toggled
+        else {
+            // If it gets this far the player cannot be toggled
+            System.out.println("Can't toggle");
+        }
     }
 
     @Override
@@ -196,7 +202,7 @@ public class Level implements Scene {
                 starting = true;
                 transitionTimer = 0;
                 FinalProject.currentIndex = this.currentScene + 1;
-                return cubix.FinalProject.scenes().get(this.currentScene + 1);
+                return cubix.FinalProject.levels().get(this.currentScene + 1);
             }
         }
         return this;
