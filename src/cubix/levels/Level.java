@@ -1,14 +1,11 @@
 package cubix.levels;
 
 import cubix.FinalProject;
+import cubix.objects.*;
 import edu.utc.game.GameObject;
 import edu.utc.game.Scene;
 import edu.utc.game.Sound;
 import edu.utc.game.Texture;
-import cubix.objects.Exit;
-import cubix.objects.Player;
-import cubix.objects.Switch;
-import cubix.objects.Trap;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -57,6 +54,7 @@ public class Level implements Scene {
     private static int transitionTimer = 0;
     private static Sound BGM = new Sound("res\\BGM.wav");
     private static Sound reset = new Sound("res\\reset.wav");
+    private static Button menuButton = new Button(3,4,4, Player.COLORS.BLUE, "Main Menu");
 
     //GO for background image
     public final static GameObject background = new GameObject();
@@ -68,6 +66,7 @@ public class Level implements Scene {
         background.getHitbox().setBounds(0, 0, ui.getWidth(), ui.getHeight());
         transition.getHitbox().setBounds(0,0,ui.getWidth(),ui.getHeight());
         BGM.setGain(0.3f);
+        BGM.setLoop(true);
         BGM.play();
     }
 
@@ -209,8 +208,14 @@ public class Level implements Scene {
                 exiting = false;
                 starting = true;
                 transitionTimer = 0;
-                FinalProject.currentIndex = this.currentScene + 1;
-                return cubix.FinalProject.levels().get(this.currentScene + 1);
+
+                if (FinalProject.currentIndex + 1 <  cubix.FinalProject.levels().size()) {
+                    FinalProject.currentIndex++;
+                    return cubix.FinalProject.levels().get(this.currentScene + 1);
+                }
+                else
+                    FinalProject.currentIndex = 0;
+                    return FinalProject.menu;
             }
         }
         return this;

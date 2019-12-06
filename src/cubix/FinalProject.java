@@ -7,8 +7,9 @@ import cubix.levels.*;
 import java.util.List;
 
 public class FinalProject extends Game {
-    static List<Scene> levels = new java.util.LinkedList();
+    static List<Scene> _levels = new java.util.LinkedList();
     public static int currentIndex = 0;
+    public static Menu menu;
 
     public static void main(String[] args)
     {
@@ -16,11 +17,11 @@ public class FinalProject extends Game {
 
         game.registerGlobalCallbacks();
 
-        levels.add(new Level1());
-        levels.add(new Level2());
-        levels.add(new Level3());
+        _levels.add(new Level1());
+        _levels.add(new Level2());
+        _levels.add(new Level3());
 
-        Menu menu = new Menu();
+        menu = new Menu();
 
         game.setScene(menu);
         game.gameLoop();
@@ -28,12 +29,12 @@ public class FinalProject extends Game {
 
     public static List<Scene> levels()
     {
-        return levels;
+        return _levels;
     }
 
     public static Level currentLevel()
     {
-        return (Level) levels.get(currentIndex);
+        return (Level) _levels.get(currentIndex);
     }
 
     public FinalProject() {
