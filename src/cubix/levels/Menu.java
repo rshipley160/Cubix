@@ -51,8 +51,8 @@ public class Menu implements Scene {
         transition.getHitbox().setBounds(0,0,ui.getWidth(),ui.getHeight());
         title.getHitbox().setBounds(96, 96, 448, 160);
 
-        buttons.add(new Button(+3, -5, BLUE,"Start Game"));
-        buttons.add(new Button(+3, +3, RED,"Exit"));
+        buttons.add(new Button(+3, -5, 4, BLUE,"Start Game"));
+        buttons.add(new Button(+3, +3, 4, RED,"Exit"));
 
 
         platforms.add(new Platform(-14, +6, Platform.PlatformType.BLUE));
@@ -71,7 +71,7 @@ public class Menu implements Scene {
         colliders.add(bluePlayer);
         bluePlayer.setColliders(colliders);
         redPlayer.setColliders(colliders);
-        redPlayer.setActive(true);
+        redPlayer.setActive(false);
         bluePlayer.setActive(true);
     }
 

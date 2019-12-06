@@ -9,11 +9,12 @@ public class Button extends GameObject {
     private Text text;
     private Player.COLORS color;
     private static Texture texture = new Texture("res\\buttons.png");
-    public Button(int x, int y, Player.COLORS color,  String text)
+    public Button(int x, int y, int size, Player.COLORS color,  String text)
     {
-        this.hitbox.setBounds(Game.ui.getWidth()/2+32*x,Game.ui.getHeight()/2+32*y,256,128);
-        int xPos = Game.ui.getWidth()/2+32*x + (256-16*text.length())/2;
-        this.text = new Text(xPos, Game.ui.getHeight()/2+32*y+48, 32, 32, text);
+        this.hitbox.setBounds(Game.ui.getWidth()/2+32*x,Game.ui.getHeight()/2+32*y,64*size,32*size);
+        int textSize = 10 * size;
+        int xPos = Game.ui.getWidth()/2+32*x + (64*size-(text.length()*textSize/2+textSize))/2;
+        this.text = new Text(xPos, Game.ui.getHeight()/2+32*y+12*size, textSize, textSize, text);
         this.color = color;
     }
 
