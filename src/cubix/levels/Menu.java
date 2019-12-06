@@ -30,16 +30,26 @@ public class Menu implements Scene {
     private Player redPlayer = new Player(-13, +4, RED);
     private Player bluePlayer = new Player(-9, +4, BLUE);
 
+    private boolean exiting;
+    private int transitionTimer = 0;
+
     //GO for background image
     public final static GameObject background = new GameObject();
 
     //Background texture
     public final static Texture bg = new Texture("res\\background.png");
 
+    private Texture titleTex = new Texture("res\\title.png");
+
+    private GameObject title = new GameObject();
+
+    private Scene nextScene;
+
     public Menu()
     {
         background.getHitbox().setBounds(0, 0, ui.getWidth(), ui.getHeight());
         transition.getHitbox().setBounds(0,0,ui.getWidth(),ui.getHeight());
+        title.getHitbox().setBounds(96, 96, 448, 160);
 
         buttons.add(new Button(+3, -5, BLUE,"Start Game"));
         buttons.add(new Button(+3, +3, RED,"Exit"));
@@ -90,6 +100,23 @@ public class Menu implements Scene {
     }
 
     @Override
+    public void onMouseEvent(int button, int action, int mods) {
+        XYPair<Integer> mousePos = Game.ui.getMouseLocation();
+        if (button==0 && action==GLFW.GLFW_PRESS) {
+            if ( buttons.get(0).tryClick(mousePos.x, mousePos.y)) {
+                nextScene = FinalProject.levels().get(0);
+                exiting = true;
+                transitionTimer = 0;
+            }
+            else if ( buttons.get(1).tryClick(mousePos.x, mousePos.y)) {
+                nextScene = null;
+                exiting = true;
+                transitionTimer = 0;
+            }
+        }
+    }
+
+    @Override
     public Scene drawFrame(int delta) {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // clear the framebuffer
         GL11.glColor3f(1, 1, 1);
@@ -106,6 +133,8 @@ public class Menu implements Scene {
             p.draw();
         }
 
+        titleTex.draw(title);
+
         //Draw players
         bluePlayer.draw();
         redPlayer.draw();
@@ -115,6 +144,23 @@ public class Menu implements Scene {
             b.draw();
         }
 
+
+        if (exiting)
+        {
+            if (transitionTimer <= 1500) {
+                transition.setColor(1f, 1f, 1f, transitionTimer / 1500f);
+                transition.draw();
+                transitionTimer += delta;
+            }
+            else {
+                transition.draw();
+                bluePlayer.respawn();
+                redPlayer.respawn();
+                exiting = false;
+                transitionTimer = 0;
+                return nextScene;
+            }
+        }
         return this;
     }
 }
