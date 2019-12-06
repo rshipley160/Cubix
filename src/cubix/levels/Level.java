@@ -67,6 +67,7 @@ public class Level implements Scene {
     {
         background.getHitbox().setBounds(0, 0, ui.getWidth(), ui.getHeight());
         transition.getHitbox().setBounds(0,0,ui.getWidth(),ui.getHeight());
+        BGM.setGain(0.3f);
         BGM.play();
     }
 

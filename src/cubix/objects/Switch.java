@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 public class Switch extends GameObject {
     private Texture texture = new Texture("res\\switches.png");
     private Player.COLORS color;
-    private boolean on = false;
+    private boolean isOn = false;
     private int timer = 0;
     private Player.COLORS touching = null;
     private Sound sound = new Sound("res\\switch.wav");
@@ -20,16 +20,19 @@ public class Switch extends GameObject {
     {
         this.hitbox.setBounds(Game.ui.getWidth()/2+x*32,Game.ui.getHeight()/2+y*32, 32, 32);
         this.color = color;
-        sound.setGain(0.4f);
+        this.sound.setGain(0.5f);
     }
 
     public void toggle()
     {
         sound.play();
-        if (this.on)
-            this.on = false;
-        else
-            this.on = true;
+        if (this.isOn) {
+            this.isOn = false;
+        }
+        else {
+            this.isOn = true;
+
+        }
         for (Trap t : FinalProject.currentLevel().getTraps())
         {
             if (t.getColor() == this.color) {
@@ -40,7 +43,7 @@ public class Switch extends GameObject {
 
     public void turnOn(boolean on)
     {
-        this.on = on;
+        this.isOn = on;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class Switch extends GameObject {
         float adjust = 0;
         if (color == Player.COLORS.RED)
             adjust = 0.5f;
-        if (on)
+        if (isOn)
             adjust += 0.25f;
         GL11.glColor3f(1,1,1);
         texture.bind();
