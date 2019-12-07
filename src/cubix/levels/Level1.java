@@ -9,10 +9,8 @@ public class Level1 extends Level {
     public Level1()
     {
         //Environment creation
-        platforms.add(new Platform(-10, +2, Platform.PlatformType.GRAY));
-        platforms.add(new Platform(-6, +2, Platform.PlatformType.BLUE));
+        platforms.add(new Platform(-8, +2, Platform.PlatformType.BLUE));
         platforms.add(new Platform(-2, +2, Platform.PlatformType.GRAY));
-        platforms.add(new Wall(-11, -2, Platform.PlatformType.RED));
 
         blueExit = new Exit(+6, -1, BLUE);
         redExit = new Exit(+10, -1, RED);
@@ -22,7 +20,7 @@ public class Level1 extends Level {
         colliders.add(redExit);
 
         //Player setup
-        bluePlayer = new Player(-4, 0, BLUE);
+        bluePlayer = new Player(-6, 0, BLUE);
         bluePlayer.setActive(true);
         colliders.add(bluePlayer);
 

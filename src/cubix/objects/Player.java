@@ -25,12 +25,15 @@ public class Player extends GameObject {
     private boolean onExit = false;
     public XYPair<Double> delta = new XYPair(0,0);
     private Sound jump = new Sound("res\\jump.wav");
+    private static Sound reset = new Sound("res\\reset.wav");
+
 
     {
         this.r = 1f;
         this.g = 1f;
         this.b = 1f;
         this.velocity = new XYPair<>(0f, 0f);
+
     }
 
 
@@ -42,6 +45,7 @@ public class Player extends GameObject {
         this.color = color;
         this.active = true;
         jump.setGain(0.3f);
+        reset.setGain(0.3f);
     }
 
     public void setActive(boolean active) {
@@ -81,8 +85,10 @@ public class Player extends GameObject {
     public void update(int delta) {
 
         Float time = delta / 1000f;
-        if (this.hitbox.x < 0 || this.hitbox.x > Game.ui.getWidth() || this.hitbox.y > Game.ui.getHeight())
+        if (this.hitbox.x < 0 || this.hitbox.x > Game.ui.getWidth() || this.hitbox.y > Game.ui.getHeight()) {
+            reset.play();
             FinalProject.currentLevel().reset();
+        }
         if (this.kinematic)
             return;
 

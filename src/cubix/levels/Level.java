@@ -53,7 +53,6 @@ public class Level implements Scene {
     private static boolean exiting = false;
     private static int transitionTimer = 0;
     private static Sound BGM = new Sound("res\\BGM.wav");
-    private static Sound reset = new Sound("res\\reset.wav");
     private static Button menuButton = new Button(3,4,4, Player.COLORS.BLUE, "Main Menu");
 
     //GO for background image
@@ -178,13 +177,12 @@ public class Level implements Scene {
 
         if (starting)
         {
-            if (transitionTimer <= 2000) {
+            if (transitionTimer <= 1500) {
                 if (transitionTimer < 100)
                 {
-                    bluePlayer.respawn();
-                    redPlayer.respawn();
+                    reset();
                 }
-                transition.setColor(1f, 1f, 1f, (1 - transitionTimer / 2000f));
+                transition.setColor(1f, 1f, 1f, (1 - transitionTimer / 1500f));
                 transitionTimer += delta;
             }
             else {
@@ -239,7 +237,6 @@ public class Level implements Scene {
 
     public void reset()
     {
-        reset.play();
         redPlayer.respawn();
         bluePlayer.respawn();
         for (Switch s : switches)
