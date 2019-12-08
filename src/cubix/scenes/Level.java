@@ -15,7 +15,7 @@ import static edu.utc.game.Game.ui;
 
 public class Level implements Scene {
 
-    private static class Transition extends GameObject
+    public static class Transition extends GameObject
     {
         @Override
         public void setColor(float r, float g, float b, float a) {
@@ -23,7 +23,7 @@ public class Level implements Scene {
         }
     }
 
-    private static Transition transition = new Transition();
+    public static Transition transition = new Transition();
 
     //Current level
     protected static int sceneIndex = 0;
@@ -213,7 +213,7 @@ public class Level implements Scene {
                 }
                 else
                     FinalProject.currentIndex = 0;
-                    return FinalProject.menu;
+                    return FinalProject.victory;
             }
         }
         return this;

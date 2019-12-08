@@ -10,6 +10,7 @@ public class FinalProject extends Game {
     static List<Scene> _levels = new java.util.LinkedList();
     public static int currentIndex = 0;
     public static Menu menu;
+    public static Victory victory;
 
     public static void main(String[] args)
     {
@@ -24,7 +25,7 @@ public class FinalProject extends Game {
         _levels.add(new Level5());
 
         menu = new Menu();
-
+        victory = new Victory();
 
         game.setScene(menu);
         game.gameLoop();
