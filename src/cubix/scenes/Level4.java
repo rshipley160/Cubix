@@ -1,4 +1,4 @@
-package cubix.levels;
+package cubix.scenes;
 
 import static cubix.objects.Player.COLORS.BLUE;
 import static cubix.objects.Player.COLORS.RED;

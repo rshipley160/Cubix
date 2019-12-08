@@ -1,6 +1,5 @@
-package cubix.levels;
+package cubix.scenes;
 
-import cubix.FinalProject;
 import cubix.objects.*;
 
 public class Level2 extends Level {

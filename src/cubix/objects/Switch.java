@@ -5,7 +5,7 @@ import edu.utc.game.Game;
 import edu.utc.game.GameObject;
 import edu.utc.game.Sound;
 import edu.utc.game.Texture;
-import cubix.levels.Level;
+import cubix.scenes.Level;
 import org.lwjgl.opengl.GL11;
 
 public class Switch extends GameObject {

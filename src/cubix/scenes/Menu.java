@@ -1,4 +1,4 @@
-package cubix.levels;
+package cubix.scenes;
 
 import cubix.FinalProject;
 import cubix.objects.*;

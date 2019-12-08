@@ -1,7 +1,5 @@
 package cubix.objects;
 
-import cubix.FinalProject;
-import cubix.levels.Menu;
 import edu.utc.game.*;
 import org.lwjgl.opengl.GL11;
 

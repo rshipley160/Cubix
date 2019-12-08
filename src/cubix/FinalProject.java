@@ -2,7 +2,7 @@ package cubix;
 
 import edu.utc.game.*;
 import org.lwjgl.opengl.GL11;
-import cubix.levels.*;
+import cubix.scenes.*;
 
 import java.util.List;
 
@@ -16,8 +16,6 @@ public class FinalProject extends Game {
         FinalProject game = new FinalProject();
 
         game.registerGlobalCallbacks();
-
-        _levels.add(new Level5());
 
         _levels.add(new Level1());
         _levels.add(new Level2());

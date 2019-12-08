@@ -1,8 +1,6 @@
-package cubix.levels;
+package cubix.scenes;
 
-import cubix.FinalProject;
 import cubix.objects.*;
-import edu.utc.game.Scene;
 
 public class Level3 extends Level {
     public Level3()
