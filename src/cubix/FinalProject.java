@@ -17,11 +17,16 @@ public class FinalProject extends Game {
 
         game.registerGlobalCallbacks();
 
+        _levels.add(new Level5());
+
         _levels.add(new Level1());
         _levels.add(new Level2());
         _levels.add(new Level3());
+        _levels.add(new Level4());
+        _levels.add(new Level5());
 
         menu = new Menu();
+
 
         game.setScene(menu);
         game.gameLoop();
