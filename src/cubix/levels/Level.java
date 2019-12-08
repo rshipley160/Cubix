@@ -245,7 +245,7 @@ public class Level implements Scene {
         }
         for (Trap t : traps)
         {
-            t.activate();
+            t.reset();
         }
     }
 }

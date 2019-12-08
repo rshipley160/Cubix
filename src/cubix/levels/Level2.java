@@ -12,7 +12,7 @@ public class Level2 extends Level {
         platforms.add(new Platform(+0, +4, Platform.PlatformType.RED));
         platforms.add(new Platform(+6, +7, Platform.PlatformType.WHITE));
 
-        traps.add(new Trap(-11, -2, 4, Player.COLORS.RED));
+        traps.add(new Trap(-11, -2, Player.COLORS.RED));
 
         switches.add(new Switch(+8, +6, Player.COLORS.RED));
 

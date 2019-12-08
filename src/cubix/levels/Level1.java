@@ -20,7 +20,7 @@ public class Level1 extends Level {
         colliders.add(redExit);
 
         //Player setup
-        bluePlayer = new Player(-6, 0, BLUE);
+        bluePlayer = new Player(-7, 0, BLUE);
         bluePlayer.setActive(true);
         colliders.add(bluePlayer);
 

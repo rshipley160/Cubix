@@ -14,8 +14,8 @@ public class Level3 extends Level {
         platforms.add(new Platform(+9, +1, Platform.PlatformType.BLUE));
         platforms.add(new Platform(+4, +2, Platform.PlatformType.WHITE));
 
-        traps.add(new Trap(+4, -2, 4, Player.COLORS.RED));
-        traps.add(new Trap(-7, +0, 4, Player.COLORS.BLUE));
+        traps.add(new Trap(+4, -2,  Player.COLORS.RED));
+        traps.add(new Trap(-7, +0,  Player.COLORS.BLUE));
 
         switches.add(new Switch(-16, +6, Player.COLORS.RED));
         switches.add(new Switch(+11, +0, Player.COLORS.BLUE));

@@ -16,13 +16,15 @@ public class Trap extends GameObject {
     private static Texture redT = new Texture("res\\RedArea.png");
     private Texture texture;
     private Player.COLORS color;
-    private List<Player> players;
     private List<Player> capturedPlayers = new java.util.LinkedList<>();
     private boolean active = true;
 
-    public Trap (int x, int y, int size, Player.COLORS col)
+    // Whether the trap starts as on or off
+    private boolean initalState;
+
+    public Trap (int x, int y, Player.COLORS col)
     {
-        this.hitbox.setBounds(Game.ui.getWidth()/2+x*32, Game.ui.getHeight()/2+y*32, size*32, size*32);
+        this.hitbox.setBounds(Game.ui.getWidth()/2+x*32, Game.ui.getHeight()/2+y*32, 128, 128);
         this.color = col;
         switch (color)
         {
@@ -36,33 +38,30 @@ public class Trap extends GameObject {
         this.r = 1f;
         this.g = 1f;
         this.b = 1f;
+        this.initalState = true;
+    }
+
+    public Trap (int x, int y, Player.COLORS col, boolean initalState)
+    {
+        this.hitbox.setBounds(Game.ui.getWidth()/2+x*32, Game.ui.getHeight()/2+y*32, 128, 128);
+        this.color = col;
+        switch (color)
+        {
+            case RED:
+                this.texture = redT;
+                break;
+            default:
+                this.texture = blueT;
+                break;
+        }
+        this.r = 1f;
+        this.g = 1f;
+        this.b = 1f;
+        this.initalState = initalState;
     }
 
     public Player.COLORS getColor() {
         return color;
-    }
-
-    public Trap (int x, int y, int size, Player.COLORS col, List<Player> players)
-    {
-        this.hitbox.setBounds(x, y, size, size);
-        this.color = col;
-        switch (color)
-        {
-            case RED:
-                this.texture = redT;
-                break;
-            default:
-                this.texture = blueT;
-                break;
-        }
-        this.r = 1f;
-        this.g = 1f;
-        this.b = 1f;
-        this.players = players;
-    }
-
-    public void setPlayers(List<Player> players) {
-        this.players = players;
     }
 
     public void draw()
@@ -92,7 +91,10 @@ public class Trap extends GameObject {
         for (Player p : capturedPlayers)
         {
             p.unfreeze();
+
         }
+        if (capturedPlayers.size() > 0)
+            Level.togglePlayers();
         capturedPlayers.clear();
         active = false;
         super.deactivate();
@@ -113,36 +115,49 @@ public class Trap extends GameObject {
         }
     }
 
+    public void reset()
+    {
+        active = initalState;
+        capturedPlayers.clear();
+    }
 
     @Override
     public void update(int delta) {
+        float tack = 0.4f;
+        float tackWidth = tack * Level.getPlayer(RED).getHitbox().width;
         if (active)
         {
             switch (this.color)
             {
                 case RED:
-                    if (this.intersects(Level.getPlayer(RED)) && this.intersection(Level.getPlayer(RED)).equals(Level.getPlayer(RED).getHitbox()))
+                    if (this.intersects(Level.getPlayer(RED)))// && this.intersection(Level.getPlayer(RED)).equals(Level.getPlayer(RED).getHitbox()))
                     {
-                        if (Level.getPlayer(RED).getColor().equals(this.color)) {
-                            if (Level.getPlayer(RED).isActive())
-                                Level.togglePlayers();
-                            Level.getPlayer(RED).freeze();
-                            capturedPlayers.add(Level.getPlayer(RED));
-                        } else {
-                            Level.getPlayer(RED).unfreeze();
+                        if (    this.intersection(Level.getPlayer(RED)).width >= tackWidth &&
+                                this.intersection(Level.getPlayer(RED)).height >= tackWidth ) {
+                            if (Level.getPlayer(RED).getColor().equals(this.color)) {
+                                if (Level.getPlayer(RED).isActive())
+                                    Level.togglePlayers();
+                                Level.getPlayer(RED).freeze();
+                                capturedPlayers.add(Level.getPlayer(RED));
+                            } else {
+                                Level.getPlayer(RED).unfreeze();
+                            }
                         }
                     }
                     return;
                 default:
-                    if (this.intersects(Level.getPlayer(BLUE)) && this.intersection(Level.getPlayer(BLUE)).equals(Level.getPlayer(BLUE).getHitbox()))
+                    if (this.intersects(Level.getPlayer(BLUE)))// && this.intersection(Level.getPlayer(BLUE)).equals(Level.getPlayer(BLUE).getHitbox()))
                     {
-                        if (Level.getPlayer(BLUE).getColor().equals(this.color)) {
-                            if (Level.getPlayer(BLUE).isActive())
-                                Level.togglePlayers();
-                            Level.getPlayer(BLUE).freeze();
-                            capturedPlayers.add(Level.getPlayer(BLUE));
-                        } else {
-                            Level.getPlayer(BLUE).unfreeze();
+                        if (    this.intersection(Level.getPlayer(BLUE)).width >= tackWidth &&
+                                this.intersection(Level.getPlayer(BLUE)).height >= tackWidth ) {
+                            if (Level.getPlayer(BLUE).getColor().equals(this.color)) {
+                                if (Level.getPlayer(BLUE).isActive())
+                                    Level.togglePlayers();
+                                Level.getPlayer(BLUE).freeze();
+                                capturedPlayers.add(Level.getPlayer(BLUE));
+                            } else {
+                                Level.getPlayer(BLUE).unfreeze();
+                            }
                         }
                     }
                     return;
