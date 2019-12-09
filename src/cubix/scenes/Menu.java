@@ -22,6 +22,7 @@ public class Menu implements Scene {
     private Player bluePlayer = new Player(-9, +4, BLUE);
 
     private boolean exiting;
+    private boolean starting;
     private int transitionTimer = 0;
 
     //GO for background image
@@ -136,6 +137,19 @@ public class Menu implements Scene {
         }
 
 
+        if (!exiting && transitionTimer == 0) {
+            starting = true;
+        }
+        if (starting) {
+            if (transitionTimer <= 1500) {
+                Level.transition.setColor(1f, 1f, 1f, (1 - transitionTimer / 1500f));
+                transitionTimer += delta;
+            }
+            else {
+                starting = false;
+            }
+            Level.transition.draw();
+        }
         if (exiting)
         {
             if (transitionTimer <= 1500) {
