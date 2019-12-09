@@ -51,9 +51,12 @@ public class Level implements Scene {
     private static boolean starting = true;
     private static boolean exiting = false;
     private static int transitionTimer = 0;
-    private static Sound BGM = new Sound("res\\BGM.wav");
-    private static Button menuButton = new Button(0,0,2, Player.COLORS.BLUE, "Main Menu");
 
+    private boolean goToMenu = false;
+
+    private static Sound BGM = new Sound("res\\BGM.wav");
+
+    public static final Sound reset = new Sound("res\\reset.wav");
     //GO for background image
     public final static GameObject background = new GameObject();
     //Background texture
@@ -66,6 +69,7 @@ public class Level implements Scene {
         BGM.setGain(0.3f);
         BGM.setLoop(true);
         BGM.play();
+        reset.setGain(0.3f);
     }
 
     {
@@ -108,10 +112,17 @@ public class Level implements Scene {
             togglePlayers();
         }
 
-        if (key== GLFW.GLFW_KEY_R & action==GLFW.GLFW_PRESS)
+        else if (key== GLFW.GLFW_KEY_R & action==GLFW.GLFW_PRESS)
         {
+            reset.play();
             reset();
+        }
 
+        else if (key== GLFW.GLFW_KEY_M & action==GLFW.GLFW_PRESS)
+        {
+            exiting = true;
+            transitionTimer = 0;
+            goToMenu = true;
         }
     }
 
@@ -206,6 +217,10 @@ public class Level implements Scene {
                 starting = true;
                 transitionTimer = 0;
 
+                if (goToMenu)
+                {
+                    return FinalProject.menu;
+                }
                 if (FinalProject.currentIndex + 1 <  cubix.FinalProject.levels().size()) {
                     FinalProject.currentIndex++;
                     return cubix.FinalProject.levels().get(this.currentScene + 1);
@@ -257,5 +272,6 @@ public class Level implements Scene {
                 bluePlayer.setActive(true);
                 break;
         }
+        goToMenu = false;
     }
 }

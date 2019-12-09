@@ -1,6 +1,7 @@
 package cubix.objects;
 
 import cubix.FinalProject;
+import cubix.scenes.Level;
 import edu.utc.game.*;
 import org.lwjgl.opengl.GL11;
 
@@ -25,7 +26,7 @@ public class Player extends GameObject {
     private boolean onExit = false;
     public XYPair<Double> delta = new XYPair(0,0);
     private Sound jump = new Sound("res\\jump.wav");
-    private static Sound reset = new Sound("res\\reset.wav");
+
 
 
     {
@@ -45,7 +46,6 @@ public class Player extends GameObject {
         this.color = color;
         this.active = true;
         jump.setGain(0.3f);
-        reset.setGain(0.3f);
     }
 
     public void setActive(boolean active) {
@@ -86,7 +86,7 @@ public class Player extends GameObject {
 
         Float time = delta / 1000f;
         if (this.hitbox.x < 0 || this.hitbox.x > Game.ui.getWidth() || this.hitbox.y > Game.ui.getHeight()) {
-            reset.play();
+            Level.reset.play();
             FinalProject.currentLevel().reset();
         }
         if (this.kinematic) {
@@ -179,8 +179,8 @@ public class Player extends GameObject {
                 {
                     Exit exit = (Exit) coll;
                     if (    exit.getColor() == this.color   &&
-                            this.hitbox.x >= exit.getHitbox().x+exit.getHitbox().width* 0.1  &&
-                            this.hitbox.x <= exit.getHitbox().x+exit.getHitbox().width* 0.9  )
+                            this.hitbox.x >= exit.getHitbox().x  &&
+                            this.hitbox.x + this.hitbox.width <= exit.getHitbox().x+exit.getHitbox().width)
                     {
                         onExit = true;
                     }
