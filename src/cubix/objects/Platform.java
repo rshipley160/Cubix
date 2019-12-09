@@ -1,15 +1,18 @@
 package cubix.objects;
 
+import cubix.Cubix;
 import edu.utc.game.Game;
 import edu.utc.game.GameObject;
 import edu.utc.game.Texture;
 import org.lwjgl.opengl.GL11;
 
 public class Platform extends GameObject {
+    // Texture for all 4 platform types
     private static Texture texture = new Texture("res\\platforms.png");
-    private static int width = 128;
-    private static int height = 32;
-    private static int cellConversion = 32;
+
+    // Fixed width and height for all platforms
+    private static final int width = 4*Cubix.cellSize;
+    private static final int height = Cubix.cellSize;
 
     public enum PlatformType {
         RED(0),
@@ -17,34 +20,35 @@ public class Platform extends GameObject {
         BLUE(2),
         GRAY(3);
 
-        int num;
+        float drawAdjust;
 
-        PlatformType(int num) {this.num = num;}
+        PlatformType(int num) {this.drawAdjust = num/4f;}
     }
 
-    private float num;
-    public Platform(int cellX, int cellY, PlatformType type){
+    // Selected color for this platform
+    private PlatformType color;
 
-        this.hitbox.setBounds(Game.ui.getWidth()/2 + cellConversion*cellX, Game.ui.getHeight()/2+cellConversion*cellY,width,height);
+    public Platform(int cellX, int cellY, PlatformType type){
+        this.hitbox.setBounds(Game.ui.getWidth()/2 + Cubix.cellSize*cellX, Game.ui.getHeight()/2+Cubix.cellSize*cellY,width,height);
         this.setColor(1f, 1f, 1f);
-        this.num = type.num;
+        this.color = type;
     }
 
     @Override
     public void draw() {
+        // Draw the corresponding portion of the platform texture over the hitbox
         GL11.glColor3f(1,1,1);
         texture.bind();
         GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2f(0f,num/4);
+        GL11.glTexCoord2f(0f,color.drawAdjust);
         GL11.glVertex2f(this.hitbox.x, this.hitbox.y);
-        GL11.glTexCoord2f(1f,num/4);
+        GL11.glTexCoord2f(1f,color.drawAdjust);
         GL11.glVertex2f(this.hitbox.x+this.hitbox.width, this.hitbox.y);
-        GL11.glTexCoord2f(1f,(num+1)/4);
+        GL11.glTexCoord2f(1f,color.drawAdjust+0.25f);
         GL11.glVertex2f(this.hitbox.x+this.hitbox.width, this.hitbox.y+this.hitbox.height);
-        GL11.glTexCoord2f(0f,(num+1)/4);
+        GL11.glTexCoord2f(0f,color.drawAdjust+0.25f);
         GL11.glVertex2f(this.hitbox.x, this.hitbox.y+this.hitbox.height);
         GL11.glEnd();
-
         GL11.glBindTexture(GL11.GL_TEXTURE_2D,  0);
     }
 }

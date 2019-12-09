@@ -1,5 +1,6 @@
 package cubix.objects;
 
+import cubix.Cubix;
 import edu.utc.game.Game;
 import edu.utc.game.GameObject;
 import edu.utc.game.Texture;
@@ -8,69 +9,71 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-import static cubix.objects.Player.COLORS.BLUE;
-import static cubix.objects.Player.COLORS.RED;
+import static cubix.objects.Cubie.COLORS.BLUE;
+import static cubix.objects.Cubie.COLORS.RED;
 
 public class Trap extends GameObject {
+    // Trap textures
     private static Texture blueT = new Texture("res\\BlueArea.png");
     private static Texture redT = new Texture("res\\RedArea.png");
-    private Texture texture;
-    private Player.COLORS color;
-    private List<Player> capturedPlayers = new java.util.LinkedList<>();
+
+    // Color this trap will affect
+    private Cubie.COLORS color;
+
+    // Any players stuck in this trap
+    private List<Cubie> capturedCubies = new java.util.LinkedList<>();
+
+    // Is the trap on?
     private boolean active = true;
 
     // Whether the trap starts as on or off
-    private boolean initalState;
+    private boolean initialState;
 
-    public Trap (int x, int y, Player.COLORS col)
+    public Trap (int x, int y, Cubie.COLORS col)
     {
-        this.hitbox.setBounds(Game.ui.getWidth()/2+x*32, Game.ui.getHeight()/2+y*32, 128, 128);
+        this.hitbox.setBounds(Game.ui.getWidth()/2+x* Cubix.cellSize, Game.ui.getHeight()/2+y*Cubix.cellSize,
+                4*Cubix.cellSize, 4*Cubix.cellSize);
         this.color = col;
-        switch (color)
-        {
-            case RED:
-                this.texture = redT;
-                break;
-            default:
-                this.texture = blueT;
-                break;
-        }
+
         this.r = 1f;
         this.g = 1f;
         this.b = 1f;
-        this.initalState = true;
+        this.initialState = true;
     }
 
-    public Trap (int x, int y, Player.COLORS col, boolean initalState)
+    public Trap (int x, int y, Cubie.COLORS col, boolean initialState)
     {
-        this.hitbox.setBounds(Game.ui.getWidth()/2+x*32, Game.ui.getHeight()/2+y*32, 128, 128);
+        this.hitbox.setBounds(Game.ui.getWidth()/2+x*Cubix.cellSize, Game.ui.getHeight()/2+y*Cubix.cellSize,
+                4*Cubix.cellSize, 4*Cubix.cellSize);
         this.color = col;
-        switch (color)
-        {
-            case RED:
-                this.texture = redT;
-                break;
-            default:
-                this.texture = blueT;
-                break;
-        }
         this.r = 1f;
         this.g = 1f;
         this.b = 1f;
-        this.initalState = initalState;
+        this.initialState = initialState;
     }
 
-    public Player.COLORS getColor() {
+    public Cubie.COLORS getColor() {
         return color;
     }
 
     public void draw()
     {
-        texture.bind();
+        // Set the appropriate texture
+        switch (color)
+        {
+            case RED:
+                redT.bind();
+                break;
+            default:
+                blueT.bind();
+                break;
+        }
+        // adjust to show off / on state
         float temp = 0;
         if (this.active)
             temp = 0.5f;
 
+        // Draw portion of texture on the hitbox
         GL11.glColor3f(1,1,1);
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glTexCoord2f(0+temp,0);
@@ -82,20 +85,25 @@ public class Trap extends GameObject {
         GL11.glTexCoord2f(0+temp,1);
         GL11.glVertex2f(this.hitbox.x, this.hitbox.y+this.hitbox.height);
         GL11.glEnd();
-
         GL11.glBindTexture(GL11.GL_TEXTURE_2D,  0);
     }
 
     public void deactivate()
     {
-        for (Player p : capturedPlayers)
+        // Unfreeze any Cubie captured
+        for (Cubie p : capturedCubies)
         {
-            p.unfreeze();
-
+            p.setKinematic(false);
         }
-        if (capturedPlayers.size() > 0)
+
+        // Toggle Cubies if any were freed
+        if (capturedCubies.size() > 0)
             Level.togglePlayers();
-        capturedPlayers.clear();
+
+        // Clear captured list
+        capturedCubies.clear();
+
+        // Set inactive
         active = false;
         super.deactivate();
     }
@@ -117,51 +125,37 @@ public class Trap extends GameObject {
 
     public void reset()
     {
-        active = initalState;
-        capturedPlayers.clear();
+        active = initialState;
+        capturedCubies.clear();
     }
 
     @Override
     public void update(int delta) {
-        float tack = 0.4f;
-        float tackWidth = tack * Level.getPlayer(RED).getHitbox().width;
+        // How sticky the trap is
+        // Higher tack means less distance the player has to be in before being stuck
+        float tack = 0.6f;
+
+        // Get the amount of 1D intersection that has to occur before the player is stuck
+        float tackWidth = (1f-tack) * Level.getPlayer(RED).getHitbox().width;
+
         if (active)
         {
-            switch (this.color)
-            {
-                case RED:
-                    if (this.intersects(Level.getPlayer(RED)))// && this.intersection(Level.getPlayer(RED)).equals(Level.getPlayer(RED).getHitbox()))
-                    {
-                        if (    this.intersection(Level.getPlayer(RED)).width >= tackWidth &&
-                                this.intersection(Level.getPlayer(RED)).height >= tackWidth ) {
-                            if (Level.getPlayer(RED).getColor().equals(this.color)) {
-                                if (Level.getPlayer(RED).isActive())
-                                    Level.togglePlayers();
-                                Level.getPlayer(RED).freeze();
-                                capturedPlayers.add(Level.getPlayer(RED));
-                            } else {
-                                Level.getPlayer(RED).unfreeze();
-                            }
+            // test if the Cubie of matching color intersects this Trap
+            // and the amount of the intersection meets the tack requirement
+                // if the matching Cubie is active, set the other player active
+                // freeze the Cubie and add to the list of captures
+                if (this.intersects(Level.getPlayer(this.color)))
+                {
+                    if (    this.intersection(Level.getPlayer(this.color)).width >= tackWidth &&
+                            this.intersection(Level.getPlayer(this.color)).height >= tackWidth ) {
+                        if (Level.getPlayer(this.color).isActive()) {
+                            Level.togglePlayers();
                         }
+                        Level.getPlayer(this.color).setKinematic(true);
+                        capturedCubies.add(Level.getPlayer(this.color));
                     }
-                    return;
-                default:
-                    if (this.intersects(Level.getPlayer(BLUE)))// && this.intersection(Level.getPlayer(BLUE)).equals(Level.getPlayer(BLUE).getHitbox()))
-                    {
-                        if (    this.intersection(Level.getPlayer(BLUE)).width >= tackWidth &&
-                                this.intersection(Level.getPlayer(BLUE)).height >= tackWidth ) {
-                            if (Level.getPlayer(BLUE).getColor().equals(this.color)) {
-                                if (Level.getPlayer(BLUE).isActive())
-                                    Level.togglePlayers();
-                                Level.getPlayer(BLUE).freeze();
-                                capturedPlayers.add(Level.getPlayer(BLUE));
-                            } else {
-                                Level.getPlayer(BLUE).unfreeze();
-                            }
-                        }
-                    }
-                    return;
-            }
+                }
+                return;
         }
     }
 }

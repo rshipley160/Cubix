@@ -2,11 +2,16 @@ package cubix.objects;
 
 import edu.utc.game.GameObject;
 import org.lwjgl.opengl.GL11;
-
 import java.awt.Rectangle;
 
+/*
+ * Class for GameObjects which have separate drawn shapes and physics colliders
+ */
 public class Collider extends GameObject {
+    // The drawn shape of the object
     protected Rectangle shape;
+
+    // Inherited hitbox is the physics collider
 
     public Collider(Rectangle shape, Rectangle collider)
     {
@@ -14,18 +19,12 @@ public class Collider extends GameObject {
         this.hitbox = collider;
     }
 
-    public void setCollider(Rectangle collider) {
-        this.hitbox = collider;
-    }
-
-    public Rectangle getCollider() {
-        return hitbox;
-    }
 
     @Override
     public void draw() {
         GL11.glColor3f(r,g,b);
 
+        //Draw the object based on shape and not hitbox
         float x=(float)shape.x;
         float y=(float)shape.y;
         float width=(float)shape.width;

@@ -6,15 +6,16 @@ import cubix.scenes.*;
 
 import java.util.List;
 
-public class FinalProject extends Game {
-    static List<Scene> _levels = new java.util.LinkedList();
+public class Cubix extends Game {
+    private static List<Scene> _levels = new java.util.LinkedList();
+    public final static int cellSize = 32;
     public static int currentIndex = 0;
     public static Menu menu;
     public static Victory victory;
 
     public static void main(String[] args)
     {
-        FinalProject game = new FinalProject();
+        Cubix game = new Cubix();
 
         game.registerGlobalCallbacks();
 
@@ -42,10 +43,10 @@ public class FinalProject extends Game {
         return (Level) _levels.get(currentIndex);
     }
 
-    public FinalProject() {
+    public Cubix() {
         // inherited from the Game class, this sets up the window and allows us to access
         // Game.ui
-        initUI(1280, 768, "Cubix");
+        initUI(40*Cubix.cellSize, 24*Cubix.cellSize, "Cubix");
 
         // screen clear is white (this could go in drawFrame if you wanted it to change
         GL11.glClearColor(0f, 0f, 0f, 0f);

@@ -2,7 +2,7 @@ package cubix.scenes;
 
 import cubix.objects.*;
 
-import static cubix.objects.Player.COLORS.BLUE;
+import static cubix.objects.Cubie.COLORS.BLUE;
 
 public class Level2 extends Level {
     public Level2()
@@ -13,29 +13,29 @@ public class Level2 extends Level {
         platforms.add(new Platform(+0, +4, Platform.PlatformType.RED));
         platforms.add(new Platform(+6, +7, Platform.PlatformType.WHITE));
 
-        traps.add(new Trap(-11, -2, Player.COLORS.RED));
+        traps.add(new Trap(-11, -2, Cubie.COLORS.RED));
 
-        switches.add(new Switch(+8, +6, Player.COLORS.RED));
+        switches.add(new Switch(+8, +6, Cubie.COLORS.RED));
 
         blueExit = new Exit(+13, +4, BLUE);
-        redExit  = new Exit(-18, -2, Player.COLORS.RED);
+        redExit  = new Exit(-18, -2, Cubie.COLORS.RED);
 
         colliders.addAll(platforms);
         colliders.add(blueExit);
         colliders.add(redExit);
 
-        //Player setup
-        bluePlayer = new Player(+1, 0, BLUE);
-        bluePlayer.setActive(true);
-        colliders.add(bluePlayer);
+        //Cubie setup
+        blueCubie = new Cubie(+1, 0, BLUE);
+        blueCubie.setActive(true);
+        colliders.add(blueCubie);
 
-        redPlayer =  new Player(-3, 0, Player.COLORS.RED);
-        redPlayer.setActive(false);
-        colliders.add(redPlayer);
+        redCubie =  new Cubie(-3, 0, Cubie.COLORS.RED);
+        redCubie.setActive(false);
+        colliders.add(redCubie);
 
         //Set each player's colliders
-        bluePlayer.setColliders(colliders);
-        redPlayer.setColliders(colliders);
+        blueCubie.setColliders(colliders);
+        redCubie.setColliders(colliders);
 
         startColor = BLUE;
     }
