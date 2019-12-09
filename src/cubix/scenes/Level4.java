@@ -43,5 +43,7 @@ public class Level4 extends Level {
         //Set each player's colliders
         bluePlayer.setColliders(colliders);
         redPlayer.setColliders(colliders);
+
+        startColor = RED;
     }
 }

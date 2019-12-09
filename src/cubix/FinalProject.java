@@ -27,6 +27,7 @@ public class FinalProject extends Game {
         menu = new Menu();
         victory = new Victory();
 
+        currentIndex = 0;
         game.setScene(menu);
         game.gameLoop();
     }

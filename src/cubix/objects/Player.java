@@ -89,9 +89,10 @@ public class Player extends GameObject {
             reset.play();
             FinalProject.currentLevel().reset();
         }
-        if (this.kinematic)
+        if (this.kinematic) {
+            grounded = true;
             return;
-
+        }
         if (grounded)
         {
             accel.y = 0f;

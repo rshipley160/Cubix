@@ -2,6 +2,8 @@ package cubix.scenes;
 
 import cubix.objects.*;
 
+import static cubix.objects.Player.COLORS.BLUE;
+
 public class Level2 extends Level {
     public Level2()
     {
@@ -15,7 +17,7 @@ public class Level2 extends Level {
 
         switches.add(new Switch(+8, +6, Player.COLORS.RED));
 
-        blueExit = new Exit(+13, +4, Player.COLORS.BLUE);
+        blueExit = new Exit(+13, +4, BLUE);
         redExit  = new Exit(-18, -2, Player.COLORS.RED);
 
         colliders.addAll(platforms);
@@ -23,7 +25,7 @@ public class Level2 extends Level {
         colliders.add(redExit);
 
         //Player setup
-        bluePlayer = new Player(+1, 0, Player.COLORS.BLUE);
+        bluePlayer = new Player(+1, 0, BLUE);
         bluePlayer.setActive(true);
         colliders.add(bluePlayer);
 
@@ -34,6 +36,8 @@ public class Level2 extends Level {
         //Set each player's colliders
         bluePlayer.setColliders(colliders);
         redPlayer.setColliders(colliders);
+
+        startColor = BLUE;
     }
 
 }

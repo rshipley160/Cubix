@@ -2,10 +2,7 @@ package cubix.scenes;
 
 import cubix.FinalProject;
 import cubix.objects.*;
-import edu.utc.game.GameObject;
-import edu.utc.game.Scene;
-import edu.utc.game.Sound;
-import edu.utc.game.Texture;
+import edu.utc.game.*;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -49,11 +46,13 @@ public class Level implements Scene {
     //List of platforms, traps, exits, walls, and players
     protected List<GameObject> colliders = new java.util.LinkedList<>();
 
+    protected Player.COLORS startColor;
+
     private static boolean starting = true;
     private static boolean exiting = false;
     private static int transitionTimer = 0;
     private static Sound BGM = new Sound("res\\BGM.wav");
-    private static Button menuButton = new Button(3,4,4, Player.COLORS.BLUE, "Main Menu");
+    private static Button menuButton = new Button(0,0,2, Player.COLORS.BLUE, "Main Menu");
 
     //GO for background image
     public final static GameObject background = new GameObject();
@@ -246,6 +245,17 @@ public class Level implements Scene {
         for (Trap t : traps)
         {
             t.reset();
+        }
+        switch (startColor)
+        {
+            case RED:
+                redPlayer.setActive(true);
+                bluePlayer.setActive(false);
+                break;
+            default:
+                redPlayer.setActive(false);
+                bluePlayer.setActive(true);
+                break;
         }
     }
 }

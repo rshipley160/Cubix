@@ -10,6 +10,7 @@ public class Level5 extends Level {
     {
         //Environment creation
         platforms.add(new Platform(-11, -7, Platform.PlatformType.WHITE));
+        platforms.add(new Wall(-7, -11, Platform.PlatformType.GRAY));
         platforms.add(new Platform(-16, -2, Platform.PlatformType.BLUE));
         platforms.add(new Platform(0, 0, Platform.PlatformType.GRAY));
         platforms.add(new Platform(+13, -2, Platform.PlatformType.RED));
@@ -18,7 +19,7 @@ public class Level5 extends Level {
         //platforms.add(new Wall(-5, -6, Platform.PlatformType.RED));
 
         traps.add(new Trap(-12, -1, RED, false));
-        traps.add(new Trap(-5, +2, BLUE));
+        traps.add(new Trap(-4, +1, BLUE));
         traps.add(new Trap(+5, -9, RED));
 
         switches.add(new Switch(-15, -3, RED));
@@ -44,5 +45,7 @@ public class Level5 extends Level {
         //Set each player's colliders
         bluePlayer.setColliders(colliders);
         redPlayer.setColliders(colliders);
+
+        startColor = BLUE;
     }
 }
