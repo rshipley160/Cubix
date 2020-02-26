@@ -110,20 +110,20 @@ public class Level implements Scene {
     @Override
     public void onKeyEvent(int key, int scancode, int action, int mods) {
         // Toggle players when space is pressed
-        if (key== GLFW.GLFW_KEY_SPACE & action==GLFW.GLFW_PRESS)
+        if (key== GLFW.GLFW_KEY_Q & action==GLFW.GLFW_PRESS)
         {
             togglePlayers();
         }
 
         // Reset when R is pressed
-        else if (key== GLFW.GLFW_KEY_R & action==GLFW.GLFW_PRESS)
+        else if (key== GLFW.GLFW_KEY_E & action==GLFW.GLFW_PRESS)
         {
             reset.play();
             reset();
         }
 
         // Go to menu when M is pressed
-        else if (key== GLFW.GLFW_KEY_M & action==GLFW.GLFW_PRESS)
+        else if (key== GLFW.GLFW_KEY_ESCAPE & action==GLFW.GLFW_PRESS && !starting)
         {
             exiting = true;
             transitionTimer = 0;
@@ -236,8 +236,7 @@ public class Level implements Scene {
                 {
                     return Cubix.menu;
                 }
-
-                if (Cubix.currentIndex + 1 <  Cubix.levels().size()) {
+                else if (Cubix.currentIndex + 1 <  Cubix.levels().size()) {
                     Cubix.currentIndex++;
                     return Cubix.levels().get(this.currentScene + 1);
                 }

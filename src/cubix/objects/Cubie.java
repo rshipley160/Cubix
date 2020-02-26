@@ -159,7 +159,7 @@ public class Cubie extends GameObject {
         velocity.y += accel.y*time;
 
         // If the player is moveable and W is pressed
-        if (this.active && Game.ui.keyPressed(GLFW_KEY_W))
+        if (this.active && Game.ui.keyPressed(GLFW_KEY_UP))
         {
             // make sure we are grounded...
             if (grounded) {
@@ -177,12 +177,12 @@ public class Cubie extends GameObject {
         grounded = false;
 
         // Handle left-right movement by adjusting distance moved in x direction
-        if (this.active && Game.ui.keyPressed(GLFW_KEY_A))
+        if (this.active && Game.ui.keyPressed(GLFW_KEY_LEFT))
         {
             this.delta.x -= speed * delta;
         }
 
-        if (this.active && Game.ui.keyPressed(GLFW_KEY_D))
+        if (this.active && Game.ui.keyPressed(GLFW_KEY_RIGHT))
         {
             this.delta.x += speed * delta;
         }
