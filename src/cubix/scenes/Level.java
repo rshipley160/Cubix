@@ -89,7 +89,6 @@ public class Level implements Scene {
         // If the first player is active and the second isn't frozen
         if (blue.isActive() && !red.isKinematic())
         {
-            System.out.println("Toggling blue to red");
             //Toggle
             blue.setActive(false);
             red.setActive(true);
