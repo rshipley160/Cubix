@@ -4,9 +4,15 @@ import cubix.Cubix;
 import edu.utc.game.*;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
+
 public class Button extends GameObject {
     // Texture for red and blue buttons
     private static Texture texture = new Texture("res\\buttons.png");
+
+    private static float selectedText = 0.75f;
+
+    private float textColor = 1f;
 
     // Text displayed on the button
     private Text text;
@@ -62,6 +68,17 @@ public class Button extends GameObject {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D,  0);
 
         //Draw the text on top of the button
+        text.setColor(textColor, textColor, textColor);
         text.draw();
+    }
+
+    public void select()
+    {
+        textColor = selectedText;
+    }
+
+    public void deselect()
+    {
+        textColor = 1f;
     }
 }

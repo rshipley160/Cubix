@@ -15,74 +15,58 @@ public class Menu implements Scene {
 
     private List<Button> buttons = new java.util.ArrayList<>();
 
-    private List<GameObject> platforms = new java.util.LinkedList<>();
-
-    private Cubie redCubie = new Cubie(-13, +4, RED);
-    private Cubie blueCubie = new Cubie(-9, +4, BLUE);
-
     private boolean exiting;
     private boolean starting;
     private int transitionTimer = 0;
 
     private static Texture titleTex = new Texture("res\\title.png");
+    private static Text authorText;
 
     private static GameObject title = new GameObject();
 
     private Scene nextScene;
+
+    private ButtonGroup menuButtons;
 
     public Menu()
     {
         // Build the scene
         Level.background.getHitbox().setBounds(0, 0, ui.getWidth(), ui.getHeight());
         Level.transition.getHitbox().setBounds(0,0,ui.getWidth(),ui.getHeight());
-        title.getHitbox().setBounds(96, 96, 448, 160);
+        title.getHitbox().setBounds(128, 256, 448, 160);
 
         buttons.add(new Button(+3, -5, 4, BLUE,"Start Game"));
         buttons.add(new Button(+3, +3, 4, RED,"Exit"));
 
-
-        platforms.add(new Platform(-14, +6, Platform.PlatformType.BLUE));
-        platforms.add(new Platform(-10, +6, Platform.PlatformType.RED));
-        platforms.add(new Platform(-10, -1, Platform.PlatformType.BLUE));
-        platforms.add(new Platform(-14, -1, Platform.PlatformType.RED));
-
-        platforms.add(new Wall(-15, -1, Platform.PlatformType.GRAY));
-        platforms.add(new Wall(-15, +3, Platform.PlatformType.WHITE));
-        platforms.add(new Wall(-6, +3, Platform.PlatformType.GRAY));
-        platforms.add(new Wall(-6, -1, Platform.PlatformType.WHITE));
-
-        // Set up Cubies
-        List<GameObject> colliders = new java.util.LinkedList<>();
-        colliders.addAll(platforms);
-        colliders.add(redCubie);
-        colliders.add(blueCubie);
-        blueCubie.setColliders(colliders);
-        redCubie.setColliders(colliders);
-        redCubie.setActive(false);
-        blueCubie.setActive(true);
+        menuButtons =  new ButtonGroup(buttons);
+        authorText = new Text(128, 448, 48, 48, "by Riley Shipley");
+        authorText.setColor(.45f, .65f, 1f);
     }
 
     @Override
     public void onKeyEvent(int key, int scancode, int action, int mods) {
-        // Toggle players when space is pressed
-        if (key== GLFW.GLFW_KEY_SPACE & action==GLFW.GLFW_PRESS)
+        if (key== GLFW.GLFW_KEY_UP & action==GLFW.GLFW_PRESS)
         {
-            // If the first player is active and the second isn't frozen
-            if (blueCubie.isActive() && !redCubie.isKinematic())
+            menuButtons.up_select();
+        }
+        else if (key== GLFW.GLFW_KEY_DOWN & action==GLFW.GLFW_PRESS)
+        {
+            menuButtons.down_select();
+        }
+        else if (key== GLFW.GLFW_KEY_ENTER & action==GLFW.GLFW_PRESS)
+        {
+            int selection = menuButtons.get_selected_index();
+            if (selection == 0)
             {
-                //Toggle
-                blueCubie.setActive(false);
-                redCubie.setActive(true);
+                nextScene = Cubix.levels().get(0);
+                exiting = true;
+                transitionTimer = 0;
             }
-            //If the second player is active and the first isn't frozen
-            else if (!blueCubie.isKinematic())
+            else
             {
-                //Toggle
-                blueCubie.setActive(true);
-                redCubie.setActive(false);
-            }
-            else {
-                // If it gets this far the player cannot be toggled
+                nextScene = null;
+                exiting = true;
+                transitionTimer = 0;
             }
         }
     }
@@ -114,20 +98,9 @@ public class Menu implements Scene {
         if (delta > 1000/30) {
             delta = 1000/30;
         }
-        //Update each player
-        redCubie.update(delta);
-        blueCubie.update(delta);
-
-        // Draw platforms & walls
-        for (GameObject p : platforms){
-            p.draw();
-        }
 
         titleTex.draw(title);
-
-        //Draw players
-        blueCubie.draw();
-        redCubie.draw();
+        authorText.draw();
 
         for (Button b : buttons)
         {
@@ -157,8 +130,6 @@ public class Menu implements Scene {
             }
             else {
                 Level.transition.draw();
-                blueCubie.respawn();
-                redCubie.respawn();
                 exiting = false;
                 transitionTimer = 0;
                 return nextScene;
