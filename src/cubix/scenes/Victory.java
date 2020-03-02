@@ -6,11 +6,15 @@ import edu.utc.game.*;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
+import java.util.List;
+
 import static cubix.objects.Cubie.COLORS.*;
 
 public class Victory implements Scene {
     private Button winText  = new Button(-4, -8, 4, BLUE, "You Win!");
     private Button mainMenu = new Button(-3, +2, 3, RED, "Main Menu");
+    private List<Button> buttonList = new java.util.LinkedList<>(java.util.Arrays.asList(new Button[] {mainMenu}));
+    private ButtonGroup menuGroup = new ButtonGroup(buttonList);
 
     private Scene nextScene = this;
 
@@ -28,6 +32,16 @@ public class Victory implements Scene {
                 exiting = true;
                 transitionTimer = 0;
             }
+        }
+    }
+
+    @Override
+    public void onKeyEvent(int key, int scancode, int action, int mods) {
+        if (key== GLFW.GLFW_KEY_ENTER & action==GLFW.GLFW_PRESS)
+        {
+                nextScene = Cubix.menu;
+                exiting = true;
+                transitionTimer = 0;
         }
     }
 
