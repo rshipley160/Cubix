@@ -46,8 +46,8 @@ public class Cubix extends Game {
     public Cubix() {
         // inherited from the Game class, this sets up the window and allows us to access
         // Game.ui
-        initUI(40*Cubix.cellSize, 24*Cubix.cellSize, "Cubix");
-
+        // initUI(40*Cubix.cellSize, 24*Cubix.cellSize, "Cubix");
+        initUI(1920, 1080, "Cubix");
         // screen clear is white (this could go in drawFrame if you wanted it to change
         GL11.glClearColor(0f, 0f, 0f, 0f);
     }
