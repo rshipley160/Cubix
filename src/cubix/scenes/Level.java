@@ -109,13 +109,13 @@ public class Level implements Scene {
     @Override
     public void onKeyEvent(int key, int scancode, int action, int mods) {
         // Toggle players when space is pressed
-        if (key== GLFW.GLFW_KEY_Q & action==GLFW.GLFW_PRESS)
+        if (key== GLFW.GLFW_KEY_J & action==GLFW.GLFW_PRESS)
         {
             togglePlayers();
         }
 
         // Reset when R is pressed
-        else if (key== GLFW.GLFW_KEY_E & action==GLFW.GLFW_PRESS)
+        else if (key== GLFW.GLFW_KEY_I & action==GLFW.GLFW_PRESS)
         {
             reset.play();
             reset();

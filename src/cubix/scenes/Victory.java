@@ -37,7 +37,7 @@ public class Victory implements Scene {
 
     @Override
     public void onKeyEvent(int key, int scancode, int action, int mods) {
-        if (key== GLFW.GLFW_KEY_ENTER & action==GLFW.GLFW_PRESS)
+        if (key== GLFW.GLFW_KEY_J & action==GLFW.GLFW_PRESS)
         {
                 nextScene = Cubix.menu;
                 exiting = true;

@@ -53,7 +53,7 @@ public class Menu implements Scene {
         {
             menuButtons.down_select();
         }
-        else if (key== GLFW.GLFW_KEY_ENTER & action==GLFW.GLFW_PRESS)
+        else if (key== GLFW.GLFW_KEY_J & action==GLFW.GLFW_PRESS)
         {
             int selection = menuButtons.get_selected_index();
             if (selection == 0)
